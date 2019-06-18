@@ -20,6 +20,7 @@ class GameScene: SKScene {
     private var spinnyNode : SKShapeNode?
     private var light = SKShapeNode(circleOfRadius: 100)
     private var line = SKShapeNode(rect: CGRect(x: 0, y: 300, width: 10, height: 200))
+    private var carArray:[SKShapeNode] = []
     
     override func sceneDidLoad() {
 
@@ -29,6 +30,7 @@ class GameScene: SKScene {
         self.car = self.childNode(withName: "//car") as? SKShapeNode
         if let car = self.car {
             car.fillColor = SKColor.blue
+            carArray.append(car)
         }
         
         line.position.x = -self.frame.width/2 + 70
@@ -127,17 +129,42 @@ class GameScene: SKScene {
     }
     
     func move() {
-        if let car = self.car {
-            if (!(car.position.x > light.position.x && car.position.x < light.position.x + 10 && checkLight())) {
-                car.position.x -= 5
+//        if let car = self.car {
+//            if (!(car.position.x > light.position.x && car.position.x < light.position.x + 10 && checkLight())) {
+//                car.position.x -= 5
+//                previouslyMoving = true
+//            }
+//            else if (previouslyMoving) {
+//                createCar()
+//                previouslyMoving = false
+//            }
+//        }
+//        if (car!.position.x <= -self.scene!.size.width/2 ) {
+//            print(car!.position.x)
+//            car!.position.x = self.scene!.size.width/2
+//            print(car!.position.x)
+//        }
+//
+        for vehicle in carArray {
+            if (!(vehicle.position.x > light.position.x && vehicle.position.x < light.position.x + 10 && checkLight())) {
+                vehicle.position.x -= 5
+            }
+            if (vehicle.position.x <= -self.scene!.size.width/2 ) {
+                vehicle.position.x = self.scene!.size.width/2
+                if (vehicle.fillColor == SKColor.blue && carArray.count < 12) {
+                    createCar()
+                }
             }
         }
-        if (car!.position.x <= -self.scene!.size.width/2 ) {
-            print(car!.position.x)
-            car!.position.x = self.scene!.size.width/2
-            print(car!.position.x)
-        }
-        
+    }
+    
+    func createCar() {
+        var car = SKShapeNode(circleOfRadius: 20)
+        car.fillColor = SKColor.orange
+        let number = Int.random(in: -500 ... 300)
+        car.position = CGPoint(x: 0, y: number)
+        self.addChild(car)
+        carArray.append(car)
     }
     
     func checkLight() -> Bool {
@@ -146,7 +173,6 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         move()
-        
         
         // Called before each frame is rendered
         
