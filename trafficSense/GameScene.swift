@@ -128,9 +128,11 @@ class GameScene: SKScene {
     
     func move() {
         if let car = self.car {
-            car.position.x -= 1
+            if (!(car.position.x > light.position.x && car.position.x < light.position.x + 10 && checkLight())) {
+                car.position.x -= 5
+            }
         }
-        if (car!.position.x <= -self.scene!.size.width/2) {
+        if (car!.position.x <= -self.scene!.size.width/2 ) {
             print(car!.position.x)
             car!.position.x = self.scene!.size.width/2
             print(car!.position.x)
@@ -139,13 +141,11 @@ class GameScene: SKScene {
     }
     
     func checkLight() -> Bool {
-        return light.fillColor == SKColor.green
+        return light.fillColor == SKColor.red
     }
     
     override func update(_ currentTime: TimeInterval) {
-        if (checkLight()){
-            move()
-        }
+        move()
         
         
         // Called before each frame is rendered
