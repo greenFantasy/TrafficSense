@@ -159,12 +159,16 @@ class GameScene: SKScene {
     }
     
     func createCar() {
-        var car = SKShapeNode(circleOfRadius: 20)
+        let car = SKShapeNode(circleOfRadius: 20)
         car.fillColor = SKColor.orange
-        let number = Int.random(in: -500 ... 300)
+        let number = Int.random(in: -700 ... 300)
         car.position = CGPoint(x: 0, y: number)
         self.addChild(car)
         carArray.append(car)
+    }
+    
+    func carDetect() {
+        
     }
     
     func checkLight() -> Bool {

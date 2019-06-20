@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04E4750422BB2F1C002FF86D /* GameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E4750322BB2F1C002FF86D /* GameVC.swift */; };
 		D988DA7C22B2ED7C005E54A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D988DA7B22B2ED7C005E54A2 /* AppDelegate.swift */; };
 		D988DA7E22B2ED7C005E54A2 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D988DA7D22B2ED7C005E54A2 /* GameScene.sks */; };
 		D988DA8022B2ED7C005E54A2 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = D988DA7F22B2ED7C005E54A2 /* Actions.sks */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		04E4750322BB2F1C002FF86D /* GameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameVC.swift; sourceTree = "<group>"; };
 		D988DA7822B2ED7C005E54A2 /* trafficSense.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = trafficSense.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D988DA7B22B2ED7C005E54A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D988DA7D22B2ED7C005E54A2 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				D988DA7F22B2ED7C005E54A2 /* Actions.sks */,
 				D988DA8122B2ED7C005E54A2 /* GameScene.swift */,
 				D988DA8322B2ED7C005E54A2 /* GameViewController.swift */,
+				04E4750322BB2F1C002FF86D /* GameVC.swift */,
 				D988DA8522B2ED7C005E54A2 /* Main.storyboard */,
 				D988DA8822B2ED7E005E54A2 /* Assets.xcassets */,
 				D988DA8A22B2ED7E005E54A2 /* LaunchScreen.storyboard */,
@@ -269,6 +272,7 @@
 			files = (
 				D988DA8222B2ED7C005E54A2 /* GameScene.swift in Sources */,
 				D988DA8422B2ED7C005E54A2 /* GameViewController.swift in Sources */,
+				04E4750422BB2F1C002FF86D /* GameVC.swift in Sources */,
 				D988DA7C22B2ED7C005E54A2 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
