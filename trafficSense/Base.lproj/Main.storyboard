@@ -46,7 +46,7 @@
         <!--GameVC-->
         <scene sceneID="zk3-uN-Nuf">
             <objects>
-                <viewController storyboardIdentifier="GameVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YB6-Nt-s5w" customClass="GameVC" customModule="trafficSense" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GameVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YB6-Nt-s5w" customClass="GameVC" customModule="trafficSense" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="upZ-VW-H4F">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

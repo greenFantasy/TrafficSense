@@ -2,7 +2,7 @@
 //  GameScene.swift
 //  trafficSense
 //
-//  Created by Mohamed Ahmed on 6/13/19.
+//  Created by Yousef Ahmed on 6/13/19.
 //  Copyright © 2019 Yousef Ahmed. All rights reserved.
 //
 
@@ -146,6 +146,10 @@ class GameScene: SKScene {
 //        }
 //
         for vehicle in carArray {
+            if (checkLight()) {
+                var offset: Double = 20
+                offset = calcNewOffset(spacing: offset)
+            }
             if (!(vehicle.position.x > light.position.x && vehicle.position.x < light.position.x + 10 && checkLight())) {
                 vehicle.position.x -= 5
             }
@@ -158,6 +162,16 @@ class GameScene: SKScene {
         }
     }
     
+    func calcNewOffset(spacing base: Double) -> Double {
+        var newOffset = base
+        for vehicle in carArray {
+            let boundingBox = vehicle.path!.boundingBox
+            var vehicleWidth = boundingBox.size.width
+            newOffset = newOffset + Double(vehicleWidth) + base
+        }
+        return newOffset
+    }
+    
     func createCar() {
         let car = SKShapeNode(circleOfRadius: 20)
         car.fillColor = SKColor.orange
@@ -165,10 +179,6 @@ class GameScene: SKScene {
         car.position = CGPoint(x: 0, y: number)
         self.addChild(car)
         carArray.append(car)
-    }
-    
-    func carDetect() {
-        
     }
     
     func checkLight() -> Bool {
