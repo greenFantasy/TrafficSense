@@ -21,8 +21,8 @@ class GameViewController: UIViewController {
         
         super.viewDidLoad()
         super.view.backgroundColor = UIColor.white
+    
         
-
     }
 
     override var shouldAutorotate: Bool {

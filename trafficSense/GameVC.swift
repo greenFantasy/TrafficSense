@@ -37,7 +37,7 @@ class GameVC: UIViewController {
                 // Set the scale mode to scale to fit the window
                 sceneNode.scaleMode = .aspectFill
                 
-                if let view = self.gameViewSK as! SKView? {
+                if let view = self.gameViewSK {
                     
                     view.presentScene(sceneNode)
                     
