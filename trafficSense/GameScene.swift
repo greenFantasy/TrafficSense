@@ -30,7 +30,7 @@ class GameScene: SKScene {
         self.lastUpdateTime = 0
         
         carCar = Car(x:0, y:70, street: firstStreet)
-        light = TrafficLight(x:-200,y:120, location: firstStreet)
+        light = TrafficLight(x:-200, y:120, location: firstStreet)
         
         // Get label node from scene and store it for use later
         self.car = self.childNode(withName: "//car") as? SKShapeNode
@@ -228,6 +228,14 @@ class GameScene: SKScene {
         return newOffset
     }
     
+    func calcDistance(car1: Car, car2: Car) -> Int {
+        let boundingBox1 = car1.getNode().path!.boundingBox
+        let vehicleWidth1 = boundingBox1.size.width/2
+        let boundingBox2 = car2.getNode().path!.boundingBox
+        let vehicleWidth2 = boundingBox2.size.width/2
+        return car1.getXPos() - car2.getXPos() - Int(vehicleWidth1) - Int(vehicleWidth2)
+    }
+    
     func speedModifierLeft(car:Car) -> Double {
         let x = car.getXPos()
         var changed = false
@@ -243,7 +251,7 @@ class GameScene: SKScene {
         if (!changed) {
             return 1
         } else {
-            return speedModifier(distance: x - closest.getXPos())
+            return speedModifier(distance: calcDistance(car1: car, car2: closest))
         }
     }
     
@@ -262,7 +270,7 @@ class GameScene: SKScene {
         if (!changed) {
             return 1
         } else {
-            return speedModifier(distance: closest.getXPos() - x)
+            return speedModifier(distance: calcDistance(car1: closest, car2: car))
         }
     }
 
@@ -281,7 +289,7 @@ class GameScene: SKScene {
         if (!changed) {
             return 1
         } else {
-            return speedModifier(distance: y - closest.getYPos())
+            return speedModifier(distance: calcDistance(car1: car, car2: closest))
         }
     }
 
@@ -300,7 +308,7 @@ class GameScene: SKScene {
         if (!changed) {
             return 1
         } else {
-            return speedModifier(distance: closest.getYPos() - y)
+            return speedModifier(distance: calcDistance(car1: closest, car2: car))
         }
     }
     

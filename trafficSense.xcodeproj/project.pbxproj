@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04B01AAD22BBEA72006B3585 /* Car.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B01AAC22BBEA72006B3585 /* Car.swift */; };
+		04B01AAF22BC3765006B3585 /* TrafficLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B01AAE22BC3765006B3585 /* TrafficLight.swift */; };
+		04B01AB122BC5267006B3585 /* Street.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B01AB022BC5267006B3585 /* Street.swift */; };
 		04E4750422BB2F1C002FF86D /* GameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E4750322BB2F1C002FF86D /* GameVC.swift */; };
 		D988DA7C22B2ED7C005E54A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D988DA7B22B2ED7C005E54A2 /* AppDelegate.swift */; };
 		D988DA7E22B2ED7C005E54A2 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D988DA7D22B2ED7C005E54A2 /* GameScene.sks */; };
@@ -38,6 +41,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		04B01AAC22BBEA72006B3585 /* Car.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Car.swift; sourceTree = "<group>"; };
+		04B01AAE22BC3765006B3585 /* TrafficLight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficLight.swift; sourceTree = "<group>"; };
+		04B01AB022BC5267006B3585 /* Street.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Street.swift; sourceTree = "<group>"; };
 		04E4750322BB2F1C002FF86D /* GameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameVC.swift; sourceTree = "<group>"; };
 		D988DA7822B2ED7C005E54A2 /* trafficSense.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = trafficSense.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D988DA7B22B2ED7C005E54A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -105,10 +111,13 @@
 		D988DA7A22B2ED7C005E54A2 /* trafficSense */ = {
 			isa = PBXGroup;
 			children = (
+				04B01AAC22BBEA72006B3585 /* Car.swift */,
 				D988DA7B22B2ED7C005E54A2 /* AppDelegate.swift */,
 				D988DA7D22B2ED7C005E54A2 /* GameScene.sks */,
 				D988DA7F22B2ED7C005E54A2 /* Actions.sks */,
 				D988DA8122B2ED7C005E54A2 /* GameScene.swift */,
+				04B01AB022BC5267006B3585 /* Street.swift */,
+				04B01AAE22BC3765006B3585 /* TrafficLight.swift */,
 				D988DA8322B2ED7C005E54A2 /* GameViewController.swift */,
 				04E4750322BB2F1C002FF86D /* GameVC.swift */,
 				D988DA8522B2ED7C005E54A2 /* Main.storyboard */,
@@ -272,8 +281,11 @@
 			files = (
 				D988DA8222B2ED7C005E54A2 /* GameScene.swift in Sources */,
 				D988DA8422B2ED7C005E54A2 /* GameViewController.swift in Sources */,
+				04B01AAF22BC3765006B3585 /* TrafficLight.swift in Sources */,
+				04B01AAD22BBEA72006B3585 /* Car.swift in Sources */,
 				04E4750422BB2F1C002FF86D /* GameVC.swift in Sources */,
 				D988DA7C22B2ED7C005E54A2 /* AppDelegate.swift in Sources */,
+				04B01AB122BC5267006B3585 /* Street.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,14 +461,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8U9M4FW69T;
+				DEVELOPMENT_TEAM = MNWC7GACYD;
 				INFOPLIST_FILE = trafficSense/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.trafficSense;
+				PRODUCT_BUNDLE_IDENTIFIER = app.trafficSenser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -468,14 +480,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8U9M4FW69T;
+				DEVELOPMENT_TEAM = MNWC7GACYD;
 				INFOPLIST_FILE = trafficSense/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.trafficSense;
+				PRODUCT_BUNDLE_IDENTIFIER = app.trafficSenser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
