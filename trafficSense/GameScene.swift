@@ -181,7 +181,7 @@ class GameScene: SKScene {
             
             if (moveVehicle) {
                 let vec = vehicle.directionToVector()
-                vehicle.move(xVel: vec[0] * vehicle.getTopSpeed() * speedModifierChooser(car: vehicle), yVel: vec[1] * vehicle.getTopSpeed() * speedModifierChooser(car: vehicle))
+                vehicle.move(xVel: vec[0] * vehicle.getTopSpeed() * 1, yVel: vec[1] * vehicle.getTopSpeed() * 1)
             }
             if (vehicle.getXPos() <= Int(-self.scene!.size.width/2) && vehicle.getDirection() == 0) {
                 vehicle.setPos(newX: Int(self.scene!.size.width/2) + 100, newY: vehicle.getYPos())

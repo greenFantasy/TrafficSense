@@ -18,7 +18,7 @@ class Car {
     private var xPos:Int
     private var yPos:Int
     private var currentStreet:Street
-    private var closestCar: Car?
+    //private var closestCar: Car?
     
     //private let finalDestination
     
@@ -27,7 +27,7 @@ class Car {
         yPos = y
         shapeNode.fillColor = SKColor.orange
         currentStreet = street
-        closestCar = nil
+        //closestCar = nil
         currentStreet.addCar(car: self)
         updateShapeNodePos()
     }
