@@ -26,7 +26,7 @@ class TrafficLight {
         updateShapeNode()
     }
     
-    init(fakeLight: Int){
+    init(fakeLight: Int) {
         xPos = -100000
         yPos = -100000
         street = Street(heightWidth: -100000, direction: 0)
@@ -70,7 +70,7 @@ class TrafficLight {
     func changeState () {
         if (state > -1) {
             state -= 2
-        } else {
+        } else if (state == -1) {
             state = 1
         }
         updateLight()

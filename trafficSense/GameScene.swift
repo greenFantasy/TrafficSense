@@ -63,11 +63,11 @@ class GameScene: SKScene {
         self.addChild(line)
 
         
-        let secondStreet = Street(heightWidth: -300, direction: 0)
+        let secondStreet = Street(heightWidth: -300, direction: 1)
         createLight(50, -300, street: secondStreet)
         createCar(400,-300,street: secondStreet)
         
-        let thirdStreetVertical = Street(heightWidth: 0,direction: 2)
+        let thirdStreetVertical = Street(heightWidth: 0,direction: 3)
         createLight(0, 300, street: thirdStreetVertical)
         createCar(0, -200, street: thirdStreetVertical)
     }
@@ -173,28 +173,41 @@ class GameScene: SKScene {
             let tempLight = vehicle.findLight()
             if (isVehicleCloseToLight(vehicle: vehicle, light: tempLight) && tempLight.isRed()) {
                 moveVehicle = false
+            } else {
+                if (vehicle.getDirection() == 1 && tempLight.isRed()) {
+                    print(vehicle.findLight().getXPos() - vehicle.getXPos())
+                }
             }
             
             if (moveVehicle) {
                 let vec = vehicle.directionToVector()
-                vehicle.move(xVel: Int(Double(vec[0]) * Double(vehicle.getTopSpeed()) * speedModifierChooser(car: vehicle)), yVel: Int(Double(vec[1]) * Double(vehicle.getTopSpeed()) * speedModifierChooser(car: vehicle)))
+                vehicle.move(xVel: vec[0] * vehicle.getTopSpeed() * speedModifierChooser(car: vehicle), yVel: vec[1] * vehicle.getTopSpeed() * speedModifierChooser(car: vehicle))
             }
-            if (vehicle.getXPos() <= Int(-self.scene!.size.width/2) ) {
+            if (vehicle.getXPos() <= Int(-self.scene!.size.width/2) && vehicle.getDirection() == 0) {
                 vehicle.setPos(newX: Int(self.scene!.size.width/2) + 100, newY: vehicle.getYPos())
-                if (vehicle.getNode().fillColor == SKColor.blue && carArray.count < 7) {
+                if (vehicle.getNode().fillColor == SKColor.blue && carArray.count < 50) {
                     createCar(600, 0, street: firstStreet)
                 }
             }
-            if (vehicle.getYPos() <= Int(-self.scene!.size.height/2) ) {
+            else if (vehicle.getYPos() <= Int(-self.scene!.size.height/2) && vehicle.getDirection() == 2) {
                 vehicle.setPos(newX: vehicle.getXPos(), newY: Int(self.scene!.size.height/2))
-                if (vehicle.getNode().fillColor == SKColor.blue && carArray.count < 7) {
-                    createCar(600, 0, street: firstStreet)
+                if (vehicle.getNode().fillColor == SKColor.orange && carArray.count < 50) {
+                    createCar(vehicle.getXPos(), 0, street: vehicle.getStreet())
                 }
+            }
+            else if (vehicle.getYPos() >= Int(self.scene!.size.height/2) && vehicle.getDirection() == 3) {
+                vehicle.setPos(newX: vehicle.getXPos(), newY: Int(-self.scene!.size.height/2))
+                if (vehicle.getNode().fillColor == SKColor.orange && carArray.count < 50) {
+                    createCar(vehicle.getXPos(), vehicle.getYPos() + 100, street: vehicle.getStreet())
+                }
+            }
+            else if (vehicle.getXPos() >= Int(self.scene!.size.width/2) && vehicle.getDirection() == 1) {
+                vehicle.setPos(newX: Int(-self.scene!.size.width/2), newY: vehicle.getYPos())
             }
         }
     }
     
-    func speedModifierChooser(car: Car) -> Double {
+    func speedModifierChooser(car: Car) -> Int {
         switch car.getDirection() {
         case 0:
             return speedModifierLeft(car: car)
@@ -212,8 +225,12 @@ class GameScene: SKScene {
     func isVehicleCloseToLight(vehicle: Car, light: TrafficLight) -> Bool {
         if vehicle.getDirection() == 0 {
             return vehicle.getXPos() > light.getXPos() && vehicle.getXPos() < light.getXPos() + 10
-        } else {
+        } else if vehicle.getDirection() == 2 {
             return vehicle.getYPos() > light.getYPos() && vehicle.getYPos() < light.getYPos() + 10
+        } else if vehicle.getDirection() == 1 {
+            return vehicle.getXPos() < light.getXPos() && vehicle.getXPos() > light.getXPos() - 10
+        } else {
+            return vehicle.getYPos() < light.getYPos() && vehicle.getYPos() > light.getYPos() - 10
         }
     }
     
@@ -236,7 +253,7 @@ class GameScene: SKScene {
         return car1.getXPos() - car2.getXPos() - Int(vehicleWidth1) - Int(vehicleWidth2)
     }
     
-    func speedModifierLeft(car:Car) -> Double {
+    func speedModifierLeft(car:Car) -> Int {
         let x = car.getXPos()
         var changed = false
         var closest = Car(x: -1000, y:0, street: car.getStreet())
@@ -255,7 +272,7 @@ class GameScene: SKScene {
         }
     }
     
-    func speedModifierRight(car:Car) -> Double {
+    func speedModifierRight(car:Car) -> Int {
         let x = car.getXPos()
         var changed = false
         var closest = Car(x: 1000, y:0, street: car.getStreet())
@@ -274,7 +291,7 @@ class GameScene: SKScene {
         }
     }
 
-    func speedModifierDown(car:Car) -> Double {
+    func speedModifierDown(car:Car) -> Int {
         let y = car.getYPos()
         var changed = false
         var closest = Car(x: 0, y: -1000, street: car.getStreet())
@@ -293,7 +310,7 @@ class GameScene: SKScene {
         }
     }
 
-    func speedModifierUp(car:Car) -> Double {
+    func speedModifierUp(car:Car) -> Int {
         let y = car.getYPos()
         var changed = false
         var closest = Car(x: 0, y: 1000, street: car.getStreet())
@@ -321,15 +338,20 @@ class GameScene: SKScene {
         }
     }
     
-    func speedModifier(distance:Int) -> Double {
-        let minDistance = 80
-        let highSpeedDistance = 230
-        if distance <= minDistance {
+    func speedModifier(distance:Int) -> Int {
+//        let minDistance = 0
+//        let highSpeedDistance = 230
+//        if distance <= minDistance {
+//            return 0
+//        } else if (distance <= highSpeedDistance) {
+//            return Double((distance - minDistance))/Double(highSpeedDistance-minDistance)
+//        }
+//        else {
+//            return 1
+//        }
+        if distance < 50 {
             return 0
-        } else if (distance <= highSpeedDistance) {
-            return Double((distance - minDistance))/Double(highSpeedDistance-minDistance)
-        }
-        else {
+        } else {
             return 1
         }
     }

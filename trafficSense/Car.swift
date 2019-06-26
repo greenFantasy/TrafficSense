@@ -18,7 +18,8 @@ class Car {
     private var xPos:Int
     private var yPos:Int
     private var currentStreet:Street
-    //private var currentRoad
+    private var closestCar: Car?
+    
     //private let finalDestination
     
     init (x: Int, y: Int, street: Street) {
@@ -26,6 +27,7 @@ class Car {
         yPos = y
         shapeNode.fillColor = SKColor.orange
         currentStreet = street
+        closestCar = nil
         currentStreet.addCar(car: self)
         updateShapeNodePos()
     }
@@ -38,7 +40,7 @@ class Car {
         shapeNode = node
     }
     
-    func move(xVel:Int, yVel:Int){
+    func move(xVel:Int, yVel:Int) {
         xPos += xVel
         yPos += yVel
         updateShapeNodePos()
