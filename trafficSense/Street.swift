@@ -29,6 +29,7 @@ class Street {
     
     func addCar(car: Car) {
         carArray.append(car)
+        updateClosestCar()
     }
     
     func addLight(trafficLight: TrafficLight){
@@ -103,5 +104,112 @@ class Street {
         return carArray
     }
     
+    func removeCar(car: Car) {
+        for i in 0...carArray.count-1 {
+            if carArray[i] === car {
+                carArray.remove(at: i)
+                break
+            }
+        }
+        updateClosestCar()
+    }
+    
+    func updateClosestCar() {
+        for vehicle in carArray {
+            vehicle.clearClosestCar()
+            closestCarChooser(car: vehicle)
+        }
+    }
+    
+    func findClosestCarLeft(car:Car) { // when direction == 0
+        let x = car.getXPos()
+        var closest:Car? = nil
+        let streetCarArray = car.getStreet().getCars()
+        for vehicle in streetCarArray {
+            if (vehicle.getXPos() < x) {
+                if let unwrapped = closest {
+                    if (vehicle.getXPos() > unwrapped.getXPos()) {
+                        closest! = vehicle
+                        car.setClosestCar(car: closest!)
+                    }
+                } else {
+                    closest = vehicle
+                    car.setClosestCar(car: closest!)
+                }
+            }
+        }
+    }
+    
+    func findClosestCarRight(car:Car) { // when direction == 1
+        let x = car.getXPos()
+        var closest:Car? = nil
+        let streetCarArray = car.getStreet().getCars()
+        for vehicle in streetCarArray {
+            if (vehicle.getXPos() > x) {
+                if let unwrapped = closest {
+                    if (vehicle.getXPos() < unwrapped.getXPos()) {
+                        closest! = vehicle
+                        car.setClosestCar(car: closest!)
+                    }
+                } else {
+                    closest = vehicle
+                    car.setClosestCar(car: closest!)
+                }
+            }
+        }
+    }
+    
+    func findClosestCarDown(car:Car) { // when direction == 2
+        let y = car.getYPos()
+        var closest:Car? = nil
+        let streetCarArray = car.getStreet().getCars()
+        for vehicle in streetCarArray {
+            if (vehicle.getYPos() < y) {
+                if let unwrapped = closest {
+                    if (vehicle.getYPos() > unwrapped.getYPos()) {
+                        closest! = vehicle
+                        car.setClosestCar(car: closest!)
+                    }
+                } else {
+                    closest = vehicle
+                    car.setClosestCar(car: closest!)
+                }
+            }
+        }
+    }
+    
+    func findClosestCarUp(car:Car) { // when direction == 3
+        let y = car.getYPos()
+        var closest:Car? = nil
+        let streetCarArray = car.getStreet().getCars()
+        for vehicle in streetCarArray {
+            if (vehicle.getYPos() > y) {
+                if let unwrapped = closest {
+                    if (vehicle.getYPos() < unwrapped.getYPos()) {
+                        closest! = vehicle
+                        car.setClosestCar(car: closest!)
+                    }
+                } else {
+                    closest = vehicle
+                    car.setClosestCar(car: closest!)
+                }
+            }
+        }
+    }
+    
+    func closestCarChooser(car: Car) {
+        switch car.getDirection() {
+        case 0:
+            findClosestCarLeft(car: car)
+        case 1:
+            findClosestCarRight(car: car)
+        case 2:
+            findClosestCarDown(car: car)
+        case 3:
+            findClosestCarUp(car: car)
+        default:
+            findClosestCarLeft(car: car)
+        }
+    }
     
 }

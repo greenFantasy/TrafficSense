@@ -27,6 +27,7 @@ class TrafficLight {
     }
     
     init(fakeLight: Int) {
+        
         xPos = -100000
         yPos = -100000
         street = Street(heightWidth: -100000, direction: 0)

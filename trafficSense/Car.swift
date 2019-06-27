@@ -14,11 +14,11 @@ import UIKit
 class Car {
     
     private var shapeNode = SKShapeNode(circleOfRadius: 20)
-    private let topSpeed = 5
+    private let topSpeed:Double = 5.0
     private var xPos:Int
     private var yPos:Int
     private var currentStreet:Street
-    //private var closestCar: Car?
+    private var closestCar: Car?
     
     //private let finalDestination
     
@@ -27,7 +27,7 @@ class Car {
         yPos = y
         shapeNode.fillColor = SKColor.orange
         currentStreet = street
-        //closestCar = nil
+        closestCar = nil
         currentStreet.addCar(car: self)
         updateShapeNodePos()
     }
@@ -50,10 +50,30 @@ class Car {
         return currentStreet.getDirection()
     }
     
+    func getClosestCar() -> Car? {
+        return closestCar
+    }
+    
+    func setClosestCar(car: Car) {
+        closestCar = car
+    }
+    
+    func clearClosestCar() {
+        closestCar = nil
+    }
+    
     func setPos(newX: Int, newY: Int) {
         xPos = newX
         yPos = newY
         updateShapeNodePos()
+    }
+    
+    func getMovingDirectionPosition() -> Int {
+        if (getDirection() == 0 || getDirection() == 1) {
+            return getXPos()
+        } else {
+            return getYPos()
+        }
     }
     
     func getNode() -> SKShapeNode
@@ -61,7 +81,7 @@ class Car {
         return shapeNode
     }
     
-    func getTopSpeed() -> Int {
+    func getTopSpeed() -> Double {
         return topSpeed
     }
     
