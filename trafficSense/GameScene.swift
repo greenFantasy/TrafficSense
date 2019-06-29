@@ -24,20 +24,25 @@ class GameScene: SKScene {
     private var firstStreet = Street(heightWidth: 0, direction: 0)
     private var carCar : Car?
     private var lightArray:[TrafficLight] = []
+    private var streetArrayHorizontal:[Street] = []
+    private var streetArrayVertical:[Street] = []
+    private var intersectionArray:[Intersection] = []
     
     override func sceneDidLoad() {
 
         self.lastUpdateTime = 0
-        
+        streetArrayHorizontal.append(firstStreet)
         carCar = Car(x:0, y:70, street: firstStreet)
         light = TrafficLight(x:-200, y:120, location: firstStreet)
+        
+        
         
         // Get label node from scene and store it for use later
         self.car = self.childNode(withName: "//car") as? SKShapeNode
         if let car = self.car {
             car.fillColor = SKColor.blue
             carCar!.setNode(node: car)
-            carCar!.setPos(newX: 0, newY: 0)
+            carCar!.setPos(newX: 250, newY: 0)
             carArray.append(carCar!)
         }
         
@@ -63,12 +68,16 @@ class GameScene: SKScene {
         self.addChild(line)
         
         let secondStreet = Street(heightWidth: -300, direction: 1)
+        streetArrayHorizontal.append(secondStreet)
         createLight(50, -300, street: secondStreet)
         createCar(400,-300,street: secondStreet)
         
         let thirdStreetVertical = Street(heightWidth: 0,direction: 2)
+        streetArrayVertical.append(thirdStreetVertical)
         createLight(0, 300, street: thirdStreetVertical)
         createCar(0, -200, street: thirdStreetVertical)
+        
+        intersectionCreator() // creates all the intersections based on the horizontal and vertical streets created above
     }
     
     
@@ -135,37 +144,7 @@ class GameScene: SKScene {
     }
     
     func move() {
-//        if let car = self.car {
-//            if (!(car.position.x > light.position.x && car.position.x < light.position.x + 10 && checkLight())) {
-//                car.position.x -= 5
-//                previouslyMoving = true
-//            }
-//            else if (previouslyMoving) {
-//                createCar()
-//                previouslyMoving = false
-//            }
-//        }
-//        if (car!.position.x <= -self.scene!.size.width/2 ) {
-//            print(car!.position.x)
-//            car!.position.x = self.scene!.size.width/2
-//            print(car!.position.x)
-//        }
-//
-//        for vehicle in carArray {
-//            if (light.isRed()) {
-//                var offset: Double = 20
-//                offset = calcNewOffset(spacing: offset)
-//            }
-//            if (!(vehicle.getXPos() > light.getXPos() && vehicle.getXPos() < light.getXPos() + 10 && light.isRed())) {
-//                vehicle.move(xVel: Int(-Double(vehicle.getTopSpeed()) * speedModifierLeft(car: vehicle)), yVel: 0)
-//            }
-//            if (vehicle.getXPos() <= Int(-self.scene!.size.width/2) ) {
-//                vehicle.setPos(newX: Int(self.scene!.size.width/2) + 100, newY: vehicle.getYPos())
-//                if (vehicle.getNode().fillColor == SKColor.blue && carArray.count < 7) {
-//                    createCar()
-//                }
-//            }
-//        }
+        
         var elementsToRemove:[Int] = []
         for i in 0...carArray.count-1 {
             let vehicle = carArray[i]
@@ -180,8 +159,12 @@ class GameScene: SKScene {
             }
             
             if (moveVehicle) {
+                
+                if let streetToTurnOn = isCarAtAnyIntersectionChecker(vehicle) {
+                    vehicle.turn(streetToTurnOn: streetToTurnOn)
+                }
                 if let g = vehicle.getClosestCar() {
-                    print(g.getXPos() - vehicle.getXPos())
+                    // print(g.getXPos() - vehicle.getXPos())
                 }
                 
                 let vec = vehicle.directionToVector()
@@ -435,7 +418,6 @@ class GameScene: SKScene {
                 }
             }
         }
-        
     }
     
     func createLight(_ xPos:Int, _ yPos:Int, street: Street) {
@@ -443,6 +425,30 @@ class GameScene: SKScene {
         self.addChild(light.getNode())
         lightArray.append(light)
         light.getNode().name = String(lightArray.count)
+    }
+    
+    func intersectionCreator() {
+        for horizontalStreet in streetArrayHorizontal {
+            for verticalStreet in streetArrayVertical {
+                let intersection = Intersection(street1: horizontalStreet, street2: verticalStreet)
+                intersectionArray.append(intersection)
+                print("LOOK BELOW")
+                print(intersection.getPosition())
+            }
+        }
+    }
+    
+    func isCarAtAnyIntersectionChecker(_ car: Car) -> Street? {
+        for intersection in intersectionArray {
+            if (intersection.isCarAtIntersection(car)) {
+                if (car.getDirection() <= 1) {
+                    return intersection.getVerticalStreet()
+                } else {
+                    return intersection.getHorizontalStreet()
+                }
+            }
+        }
+        return nil
     }
     
     override func update(_ currentTime: TimeInterval) {

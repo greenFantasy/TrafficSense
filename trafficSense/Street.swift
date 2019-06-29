@@ -32,6 +32,10 @@ class Street {
         updateClosestCar()
     }
     
+    func getPosition() -> Int {
+        return position
+    }
+    
     func addLight(trafficLight: TrafficLight){
         var added = false
         if (lightArray.count > 0) {

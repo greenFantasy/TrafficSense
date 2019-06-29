@@ -26,6 +26,7 @@ class Car {
         xPos = x
         yPos = y
         shapeNode.fillColor = SKColor.orange
+        //shapeNode.fillTexture = SKTexture.init(image: UIImage(named: "Green Pickup")!)
         currentStreet = street
         closestCar = nil
         currentStreet.addCar(car: self)
@@ -121,6 +122,19 @@ class Car {
             return [0,1]
         default:
             return [0,0]
+        }
+    }
+    
+    func isAtIntersection (intersection: Intersection) -> Bool {
+        return intersection.isCarAtIntersection(self)
+    }
+    
+    func turn(streetToTurnOn: Street) {
+        let number = Int.random(in: 0 ... 2)
+        if (number == 0) {
+            currentStreet.removeCar(car: self)
+            currentStreet = streetToTurnOn
+            streetToTurnOn.addCar(car: self)
         }
     }
 }
