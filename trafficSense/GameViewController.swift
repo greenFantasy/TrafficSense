@@ -21,7 +21,6 @@ class GameViewController: UIViewController {
         
         super.viewDidLoad()
         super.view.backgroundColor = UIColor.white
-    
         
     }
 

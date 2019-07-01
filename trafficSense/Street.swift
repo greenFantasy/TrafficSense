@@ -10,13 +10,13 @@ import Foundation
 import SpriteKit
 import UIKit
 
-class Street {
+class Street:StreetProtocol {
     
-    private var direction = 0 // left is 0, right is 1, down is 2, up is 3
-    private var carArray:[Car] = []
-    private var lightArray:[TrafficLight] = []
-    private let position:Int
-    private var lanes = 1
+    internal var direction = 0 // left is 0, right is 1, down is 2, up is 3
+    internal var carArray:[Car] = []
+    internal var lightArray:[TrafficLight] = []
+    internal var position:Int
+    internal var lanes = 1
     
     init(heightWidth: Int, direction: Int) {
         position = heightWidth

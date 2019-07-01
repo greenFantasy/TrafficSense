@@ -14,7 +14,7 @@ class TrafficLight {
     
     private var xPos:Int
     private var yPos:Int
-    private var shapeNode = SKShapeNode(circleOfRadius: 50)
+    private var shapeNode = SKShapeNode(circleOfRadius: 30)
     private var state:Int = -1
     private var street:Street
     
@@ -27,7 +27,6 @@ class TrafficLight {
     }
     
     init(fakeLight: Int) {
-        
         xPos = -100000
         yPos = -100000
         street = Street(heightWidth: -100000, direction: 0)

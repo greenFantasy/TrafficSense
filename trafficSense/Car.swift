@@ -19,6 +19,7 @@ class Car {
     private var yPos:Int
     private var currentStreet:Street
     private var closestCar: Car?
+    private var intersectionArray:[Intersection] = [] // contains all intersections a car has turned at, a car cannot turn at the same intersection twice
     
     //private let finalDestination
     
@@ -129,12 +130,19 @@ class Car {
         return intersection.isCarAtIntersection(self)
     }
     
-    func turn(streetToTurnOn: Street) {
+    func turn(streetToTurnOn: Street, intersection: Intersection) {
         let number = Int.random(in: 0 ... 2)
-        if (number == 0) {
+        var used = false
+        for usedIntersection in intersectionArray {
+            if (usedIntersection === intersection) {
+                used = true
+            }
+        }
+        if (number == 0 && !used) {
             currentStreet.removeCar(car: self)
             currentStreet = streetToTurnOn
             streetToTurnOn.addCar(car: self)
+            intersectionArray.append(intersection)
         }
     }
 }
