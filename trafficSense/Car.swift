@@ -11,9 +11,9 @@ import SpriteKit
 import UIKit
 
 
-class Car {
+class Car: SKShapeNode {  // Car implements SKShapeNode class
     
-    private var shapeNode = SKShapeNode(circleOfRadius: 20)
+    private var shapeNode = SKShapeNode(circleOfRadius: 40)
     private let topSpeed:Double = 5.0
     private var xPos:Int
     private var yPos:Int
@@ -23,15 +23,21 @@ class Car {
     
     //private let finalDestination
     
-    init (x: Int, y: Int, street: Street) {
+    init (x: Int, y: Int, street: Street, imageNamed: String) {  // Parameters include path to the correct image of the car
         xPos = x
         yPos = y
         shapeNode.fillColor = SKColor.orange
-        //shapeNode.fillTexture = SKTexture.init(image: UIImage(named: "Green Pickup")!)
         currentStreet = street
         closestCar = nil
+        super.init()
+        shapeNode.strokeColor = UIColor.clear
+        shapeNode.fillTexture = SKTexture.init(image: UIImage(named: imageNamed)!)  // Covers the shape with the texture (image) of the correct car based on imageName pass through
         currentStreet.addCar(car: self)
         updateShapeNodePos()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {  // Required for SKShapeNode implementation
+        fatalError("init(coder:) has not been implemented")
     }
     
     func updateShapeNodePos() {

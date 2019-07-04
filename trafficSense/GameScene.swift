@@ -15,11 +15,9 @@ class GameScene: SKScene {
     var graphs = [String : GKGraph]()
     
     private var lastUpdateTime : TimeInterval = 0
-    private var label : SKLabelNode?
     private var car : SKShapeNode?
     private var spinnyNode : SKShapeNode?
     private var light : TrafficLight?
-    private var line = SKShapeNode(rect: CGRect(x: 0, y: 300, width: 10, height: 200))
     private var carArray:[Car] = []
     private var firstStreet = Street(heightWidth: 0, direction: 0)
     private var carCar : Car?
@@ -27,23 +25,16 @@ class GameScene: SKScene {
     private var streetArrayHorizontal:[Street] = []
     private var streetArrayVertical:[Street] = []
     private var intersectionArray:[Intersection] = []
+    private var scoreLabel = SKLabelNode(fontNamed: "Helvetica Neue UltraLight")
+    private var score = 0  // Score variable
+    private var timer:Timer?  // Creates optional of type Timer
+    private var timeLeft = 60  //Variable used in timer for setting amount of time left
     
     override func sceneDidLoad() {
-
         self.lastUpdateTime = 0
         streetArrayHorizontal.append(firstStreet)
-        carCar = Car(x:0, y:70, street: firstStreet)
-//        light = TrafficLight(x:-200, y:120, location: firstStreet)
-//        light!.getNode().name = "1"
-//        light!.getNode().isUserInteractionEnabled = false
-//        self.addChild(light!.getNode())
-//        lightArray.append(light!)
-//         createLight(0, 120, street: firstStreet)
-//        firstStreet.addLight(trafficLight: light!)
-        
-        
-        
-        // Get label node from scene and store it for use later
+        carCar = Car(x:0, y:70, street: firstStreet, imageNamed: "Green Pickup")
+
         self.car = self.childNode(withName: "//car") as? SKShapeNode
         if let car = self.car {
             car.fillColor = SKColor.blue
@@ -52,23 +43,18 @@ class GameScene: SKScene {
             carArray.append(carCar!)
         }
         
+        /*  This next block of code sets a few properties for the score label which will also include time left in the game. Currently its position is set relative to the screen size so that multiple devices can be supported.
+        */
         
-        line.position.x = -self.frame.width/2 + 70
-        // How to cure cancer:
-//        let shape = SKShapeNode()
-//        shape.path = UIBezierPath(arcCenter: CGPoint(x: 100, y:0), radius: 100, startAngle: 0, endAngle: 2*3.1415, clockwise: true).cgPath
-// //       shape.position = CGPoint(x: frame.midX, y: frame.midY)
-//        shape.fillColor = UIColor.red
-//        addChild(shape)
+        scoreLabel.text = ""
+        scoreLabel.fontSize = 65
+        scoreLabel.fontColor = SKColor.white
+        scoreLabel.position = CGPoint(x: frame.midX, y: frame.maxY * 3/4)
         
-        
-        line.fillColor = SKColor.white
-        self.addChild(line)
+        self.addChild(scoreLabel)  // Adds the scoreLabel to the scene
         
         let secondStreet = Street(heightWidth: -300, direction: 0)
         streetArrayHorizontal.append(secondStreet)
-//        createLight(50, -300, street: secondStreet)
-//        createCar(400,-300,street: secondStreet)
         
         let thirdStreetVertical = Street(heightWidth: 0,direction: 2)
         let testStreet = Street(heightWidth: 200,direction: 2)
@@ -78,13 +64,27 @@ class GameScene: SKScene {
         createCar(0, -200, street: thirdStreetVertical)
         
         intersectionCreator() // creates all the intersections based on the horizontal and vertical streets created above
+        
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
+        
+        /*  The timer above is now initialized using a few key properties: the timeInterval is the interval in which the timer will update, target is where the timer will be applied, selector specifies a function to run when the timer updates based on the time interval, userInfo can supply information to the selector function, and repeats allows the timer to run continuously until invalidated.
+        */
+    }
+    
+    /*  The function below is visible in objective-c since the selector is an obj-c concept. The timeLeft variable is deprecated by 1 referencing one second passing. The label is updated, and once the timeLeft variable reaches 0, the timer is invalidated and the label is updated to reflect the game being over.
+    */
+    @objc func onTimerFires() {
+        timeLeft -= 1
+        scoreLabel.text = "\(timeLeft) seconds left, score: " + String(score)
+        
+        if timeLeft <= 0 {
+            timer?.invalidate()
+            timer = nil
+            scoreLabel.text = "Game over! Score: " + String(score)
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
-        
     //    for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
     
@@ -279,15 +279,23 @@ class GameScene: SKScene {
     func createCar(_ xPos:Int, _ yPos:Int, street: Street) {
         // let number = Int.random(in: -700 ... 300)
         let streetCarArray = street.getCars()
-        let car = Car(x: xPos, y: yPos, street: street)
-        self.addChild(car.getNode())
-        carArray.append(car)
+        let number = Int.random(in: 1 ... 2)  // This code generates a random number 1 or 2 to replicate 50% probability for any event
+        var car : Car?
+        if (number == 1) {
+            car = Car(x: xPos, y: yPos, street: street, imageNamed: "car") // If 1, a Car instance will be created with the image being that of a car
+        }
+        else {
+            car = Car(x: xPos, y: yPos, street: street, imageNamed: "Green Pickup") // If 2, a Car instance will be created with the image being that of a pickup truck
+        }
+        
+        self.addChild(car!.getNode())
+        carArray.append(car!)
         for vehicle in streetCarArray {
-            if let car2 = car.getClosestCar() {
-                if (street.getDirection() == 0 && car2.getXPos() < vehicle.getXPos() && car.getXPos() > vehicle.getXPos()) {
+            if let car2 = car!.getClosestCar() {
+                if (street.getDirection() == 0 && car2.getXPos() < vehicle.getXPos() && car!.getXPos() > vehicle.getXPos()) {
                     vehicle.setClosestCar(car: vehicle)
                 }
-                if (street.getDirection() == 1 && car2.getXPos() > vehicle.getXPos() && car.getXPos() < vehicle.getXPos()) {
+                if (street.getDirection() == 1 && car2.getXPos() > vehicle.getXPos() && car!.getXPos() < vehicle.getXPos()) {
                     vehicle.setClosestCar(car: vehicle)
                 }
             }
