@@ -127,7 +127,7 @@ class GameScene: SKScene {
                 elementsToRemove.append(i)
                 removeCar(vehicle)
                 if (carArray.count < 25) {
-                    //createCar(vehicle.getXPos(), 1000, leftStreet: vehicle.getStreet())
+                    createCar(vehicle.getXPos(), 1000, leftStreet: vehicle.getStreet())
                 }
             }
             else if (vehicle.getYPos() >= Int(self.scene!.size.height/2) && vehicle.getDirection() == 3) {

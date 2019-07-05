@@ -32,6 +32,15 @@ class Car {
         closestCar = nil
         currentStreet.addCar(car: self)
         updateShapeNodePos()
+        fixPosOnStreet()
+    }
+    
+    func fixPosOnStreet() {
+        if (currentStreet.getDirection() <= 1) {
+            yPos = currentStreet.getPosition()
+        } else {
+            xPos = currentStreet.getPosition()
+        }
     }
     
     func updateShapeNodePos() {
@@ -143,6 +152,7 @@ class Car {
             currentStreet = streetToTurnOn
             streetToTurnOn.addCar(car: self)
             intersectionArray.append(intersection)
+            fixPosOnStreet()
         }
     }
 }

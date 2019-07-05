@@ -17,8 +17,8 @@ class TwoWayVertical {
     
     init (midline: Int) {
         self.midline = midline
-        downStreet = DownStreet(streetPos: midline + 15)
-        upStreet = UpStreet(streetPos: midline - 15)
+        downStreet = DownStreet(streetPos: midline - 30)
+        upStreet = UpStreet(streetPos: midline + 30)
     }
     
     func getDownStreet() -> DownStreet {

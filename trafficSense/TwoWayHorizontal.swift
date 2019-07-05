@@ -17,8 +17,8 @@ class TwoWayHorizontal {
     
     init (midline: Int) {
         self.midline = midline
-        leftStreet = LeftStreet(streetPos: midline + 15)
-        rightStreet = RightStreet(streetPos: midline - 15)
+        leftStreet = LeftStreet(streetPos: midline + 30)
+        rightStreet = RightStreet(streetPos: midline - 30)
     }
     
     func getLeftStreet() -> LeftStreet {

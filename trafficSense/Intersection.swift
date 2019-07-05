@@ -27,16 +27,17 @@ class Intersection {
     private var lightDown:TrafficLight
     private var lightUp:TrafficLight
     private var allFourLights:[TrafficLight] = []
+    private var lightDistance = 50 // just used for placing lights graphically, does not have any logical effect in the code
     
     init (horizontal: TwoWayHorizontal, vertical: TwoWayVertical) {
         xCenter = vertical.getMidline()
         yCenter = horizontal.getMidline()
         horizontalTwoWay = horizontal
         verticalTwoWay = vertical
-        lightLeft = TrafficLight(x: xCenter - width/2 - 15, y: yCenter + height/2 + 15, location: horizontalTwoWay.getLeftStreet())
-        lightRight = TrafficLight(x: xCenter + width/2 + 15, y: yCenter - height/2 - 15, location: horizontalTwoWay.getRightStreet())
-        lightDown = TrafficLight(x: xCenter - width/2 - 15, y: yCenter - height/2 - 15, location: verticalTwoWay.getDownStreet())
-        lightUp = TrafficLight(x: xCenter + width/2 + 15, y: yCenter + height/2 + 15, location: verticalTwoWay.getUpStreet())
+        lightLeft = TrafficLight(x: xCenter - width/2 - lightDistance, y: yCenter + height/2 + lightDistance, location: horizontalTwoWay.getLeftStreet())
+        lightRight = TrafficLight(x: xCenter + width/2 + lightDistance, y: yCenter - height/2 - lightDistance, location: horizontalTwoWay.getRightStreet())
+        lightDown = TrafficLight(x: xCenter - width/2 - lightDistance, y: yCenter - height/2 - lightDistance, location: verticalTwoWay.getDownStreet())
+        lightUp = TrafficLight(x: xCenter + width/2 + lightDistance, y: yCenter + height/2 + lightDistance, location: verticalTwoWay.getUpStreet())
         allFourLights.append(lightLeft)
         allFourLights.append(lightRight)
         allFourLights.append(lightDown)
