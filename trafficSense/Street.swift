@@ -12,6 +12,11 @@ import UIKit
 
 class Street:StreetProtocol {
     
+    
+    func findClosestCar(car: Car) {
+        return
+    }
+    
     internal var direction = 0 // left is 0, right is 1, down is 2, up is 3
     internal var carArray:[Car] = []
     internal var lightArray:[TrafficLight] = []

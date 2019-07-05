@@ -33,14 +33,5 @@ protocol StreetProtocol {
     
     func updateClosestCar()
     
-    func findClosestCarLeft(car:Car)
-    
-    func findClosestCarRight(car:Car)
-    
-    func findClosestCarDown(car:Car)
-    
-    func findClosestCarUp(car:Car)
-    
-    func closestCarChooser(car: Car)
-    
+    func findClosestCar(car: Car)
 }

@@ -16,9 +16,9 @@ class TrafficLight {
     private var yPos:Int
     private var shapeNode = SKShapeNode(circleOfRadius: 30)
     private var state:Int = -1
-    private var street:Street
+    private var street:StreetProtocol
     
-    init (x:Int, y:Int, location: Street) {
+    init (x:Int, y:Int, location: StreetProtocol) {
         xPos = x
         yPos = y
         street = location

@@ -17,13 +17,13 @@ class Car {
     private let topSpeed:Double = 5.0
     private var xPos:Int
     private var yPos:Int
-    private var currentStreet:Street
+    private var currentStreet:StreetProtocol
     private var closestCar: Car?
     private var intersectionArray:[Intersection] = [] // contains all intersections a car has turned at, a car cannot turn at the same intersection twice
     
     //private let finalDestination
     
-    init (x: Int, y: Int, street: Street) {
+    init (x: Int, y: Int, street: StreetProtocol) {
         xPos = x
         yPos = y
         shapeNode.fillColor = SKColor.orange
@@ -103,7 +103,7 @@ class Car {
         return [xPos,yPos]
     }
     
-    func getStreet() -> Street {
+    func getStreet() -> StreetProtocol {
         return currentStreet
     }
     
@@ -130,7 +130,7 @@ class Car {
         return intersection.isCarAtIntersection(self)
     }
     
-    func turn(streetToTurnOn: Street, intersection: Intersection) {
+    func turn(streetToTurnOn: StreetProtocol, intersection: Intersection) {
         let number = Int.random(in: 0 ... 2)
         var used = false
         for usedIntersection in intersectionArray {

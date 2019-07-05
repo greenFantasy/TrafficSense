@@ -16,66 +16,38 @@ class GameScene: SKScene {
     
     private var lastUpdateTime : TimeInterval = 0
     private var label : SKLabelNode?
-    private var car : SKShapeNode?
+    //private var car : SKShapeNode?
     private var spinnyNode : SKShapeNode?
     private var light : TrafficLight?
     private var line = SKShapeNode(rect: CGRect(x: 0, y: 300, width: 10, height: 200))
     private var carArray:[Car] = []
-    private var firstStreet = Street(heightWidth: 0, direction: 0)
-    private var carCar : Car?
     private var lightArray:[TrafficLight] = []
-    private var streetArrayHorizontal:[Street] = []
-    private var streetArrayVertical:[Street] = []
     private var intersectionArray:[Intersection] = []
+    private var streetArray:[StreetProtocol] = []
+    private var twoWayHorizontalArray:[TwoWayHorizontal] = []
+    private var twoWayVerticalArray:[TwoWayVertical] = []
     
     override func sceneDidLoad() {
 
         self.lastUpdateTime = 0
-        streetArrayHorizontal.append(firstStreet)
-        carCar = Car(x:0, y:70, street: firstStreet)
-//        light = TrafficLight(x:-200, y:120, location: firstStreet)
-//        light!.getNode().name = "1"
-//        light!.getNode().isUserInteractionEnabled = false
-//        self.addChild(light!.getNode())
-//        lightArray.append(light!)
-//         createLight(0, 120, street: firstStreet)
-//        firstStreet.addLight(trafficLight: light!)
         
+        let firstTwoWay = TwoWayHorizontal(midline: 100)
+        twoWayHorizontalArray.append(firstTwoWay)
+        createCar(-100, 100, leftStreet: firstTwoWay.getLeftStreet())
+        createCar(-100, 100, leftStreet: firstTwoWay.getRightStreet())
         
+        let secondTwoWay = TwoWayVertical(midline: 100)
+        twoWayVerticalArray.append(secondTwoWay)
+        createCar(100, -100, leftStreet: secondTwoWay.getDownStreet())
+        createCar(100, -200, leftStreet: secondTwoWay.getUpStreet())
         
-        // Get label node from scene and store it for use later
-        self.car = self.childNode(withName: "//car") as? SKShapeNode
-        if let car = self.car {
-            car.fillColor = SKColor.blue
-            carCar!.setNode(node: car)
-            carCar!.setPos(newX: 250, newY: 0)
-            carArray.append(carCar!)
-        }
+        let third = TwoWayVertical(midline: -300)
+        twoWayVerticalArray.append(third)
+        createCar(-300, -100, leftStreet: third.getDownStreet())
+        createCar(-300, -200, leftStreet: third.getUpStreet())
         
-        
-        line.position.x = -self.frame.width/2 + 70
-        // How to cure cancer:
-//        let shape = SKShapeNode()
-//        shape.path = UIBezierPath(arcCenter: CGPoint(x: 100, y:0), radius: 100, startAngle: 0, endAngle: 2*3.1415, clockwise: true).cgPath
-// //       shape.position = CGPoint(x: frame.midX, y: frame.midY)
-//        shape.fillColor = UIColor.red
-//        addChild(shape)
-        
-        
-        line.fillColor = SKColor.white
-        self.addChild(line)
-        
-        let secondStreet = Street(heightWidth: -300, direction: 0)
-        streetArrayHorizontal.append(secondStreet)
-//        createLight(50, -300, street: secondStreet)
-//        createCar(400,-300,street: secondStreet)
-        
-        let thirdStreetVertical = Street(heightWidth: 0,direction: 2)
-        let testStreet = Street(heightWidth: 200,direction: 2)
-        streetArrayVertical.append(thirdStreetVertical)
-        streetArrayVertical.append(testStreet)
-        // createLight(0, 300, street: thirdStreetVertical)
-        createCar(0, -200, street: thirdStreetVertical)
+        let fourth = TwoWayHorizontal(midline: -300)
+        twoWayHorizontalArray.append(fourth)
         
         intersectionCreator() // creates all the intersections based on the horizontal and vertical streets created above
     }
@@ -121,7 +93,6 @@ class GameScene: SKScene {
     }
     
     func move() {
-        
         var elementsToRemove:[Int] = []
         for i in 0...carArray.count-1 {
             let vehicle = carArray[i]
@@ -144,31 +115,31 @@ class GameScene: SKScene {
                 
             }
             if (vehicle.getXPos() <= Int(-self.scene!.size.width/2) && vehicle.getDirection() == 0) {
-                createCar(Int(self.scene!.size.width/2) + 100, vehicle.getYPos(), street: vehicle.getStreet())
+                createCar(Int(self.scene!.size.width/2) + 100, vehicle.getYPos(), leftStreet: vehicle.getStreet())
                 elementsToRemove.append(i)
                 removeCar(vehicle)
                 if (carArray.count < 25) {
-                    createCar(600, 0, street: firstStreet)
+                    //createCar(600, 0, street: firstStreet)
                 }
             }
             else if (vehicle.getYPos() <= Int(-self.scene!.size.height/2) && vehicle.getDirection() == 2) {
-                createCar(vehicle.getXPos(), Int(self.scene!.size.height/2), street: vehicle.getStreet())
+                createCar(vehicle.getXPos(), Int(self.scene!.size.height/2), leftStreet: vehicle.getStreet())
                 elementsToRemove.append(i)
                 removeCar(vehicle)
                 if (carArray.count < 25) {
-                    createCar(vehicle.getXPos(), 1000, street: vehicle.getStreet())
+                    //createCar(vehicle.getXPos(), 1000, leftStreet: vehicle.getStreet())
                 }
             }
             else if (vehicle.getYPos() >= Int(self.scene!.size.height/2) && vehicle.getDirection() == 3) {
-                createCar(vehicle.getXPos(), Int(-self.scene!.size.height/2), street: vehicle.getStreet())
+                createCar(vehicle.getXPos(), Int(-self.scene!.size.height/2), leftStreet: vehicle.getStreet())
                 elementsToRemove.append(i)
                 removeCar(vehicle)
                 if (carArray.count < 25) {
-                    createCar(vehicle.getXPos(), -vehicle.getYPos() - 100, street: vehicle.getStreet())
+                    //createCar(vehicle.getXPos(), -vehicle.getYPos() - 100, leftStreet: vehicle.getStreet())
                 }
             }
             else if (vehicle.getXPos() >= Int(self.scene!.size.width/2) && vehicle.getDirection() == 1) {
-                createCar(Int(-self.scene!.size.width/2), vehicle.getYPos(), street: vehicle.getStreet())
+                createCar(Int(-self.scene!.size.width/2), vehicle.getYPos(), leftStreet: vehicle.getStreet())
                 elementsToRemove.append(i)
                 removeCar(vehicle)
             }
@@ -294,6 +265,24 @@ class GameScene: SKScene {
         }
     }
     
+    func createCar(_ xPos:Int, _ yPos:Int, leftStreet: StreetProtocol) {
+        // let number = Int.random(in: -700 ... 300)
+        let streetCarArray = leftStreet.getCars()
+        let car = Car(x: xPos, y: yPos, street: leftStreet)
+        self.addChild(car.getNode())
+        carArray.append(car)
+        for vehicle in streetCarArray {
+            if let car2 = car.getClosestCar() {
+                if (leftStreet.getDirection() == 0 && car2.getXPos() < vehicle.getXPos() && car.getXPos() > vehicle.getXPos()) {
+                    vehicle.setClosestCar(car: vehicle)
+                }
+                if (leftStreet.getDirection() == 1 && car2.getXPos() > vehicle.getXPos() && car.getXPos() < vehicle.getXPos()) {
+                    vehicle.setClosestCar(car: vehicle)
+                }
+            }
+        }
+    }
+    
     func createLight(_ xPos:Int, _ yPos:Int, street: Street) {
         let light = TrafficLight(x: xPos, y: yPos, location: street)
         self.addChild(light.getNode())
@@ -309,9 +298,9 @@ class GameScene: SKScene {
     }
     
     func intersectionCreator() {
-        for horizontalStreet in streetArrayHorizontal {
-            for verticalStreet in streetArrayVertical {
-                let intersection = Intersection(street1: horizontalStreet, street2: verticalStreet)
+        for horizontalTwoWay in twoWayHorizontalArray {
+            for verticalTwoWay in twoWayVerticalArray {
+                let intersection = Intersection(horizontal: horizontalTwoWay, vertical: verticalTwoWay)
                 intersectionArray.append(intersection)
                 for trafficLight in intersection.getAllLights() {
                     createLight(trafficLight: trafficLight)
@@ -325,17 +314,27 @@ class GameScene: SKScene {
     func isCarAtAnyIntersectionChecker(_ car: Car) -> Intersection? {
         for intersection in intersectionArray {
             if (intersection.isCarAtIntersection(car)) {
+                print(car.getPositionArray())
                 return intersection
             }
         }
         return nil
     }
     
-    func getStreetToTurnOn (car: Car, intersection: Intersection) -> Street {
+    func getStreetToTurnOn (car: Car, intersection: Intersection) -> StreetProtocol {
+        let number = Int.random(in: 0 ... 1)
         if (car.getDirection() <= 1) {
-            return intersection.getVerticalStreet()
+            if number == 0 {
+                return intersection.getVerticalTwoWay().getDownStreet()
+            } else {
+                return intersection.getVerticalTwoWay().getUpStreet()
+            }
         } else {
-            return intersection.getHorizontalStreet()
+            if number == 0 {
+                return intersection.getHorizontalTwoWay().getLeftStreet()
+            } else {
+                return intersection.getHorizontalTwoWay().getRightStreet()
+            }
         }
     }
     
