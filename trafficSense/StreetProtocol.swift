@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol StreetProtocol {
-    
+    //all these variables and methods are in every street class
     var direction:Int { get set } // left is 0, right is 1, down is 2, up is 3
     var carArray:[Car] { get set }
     var lightArray:[TrafficLight] { get set }
@@ -33,14 +33,5 @@ protocol StreetProtocol {
     
     func updateClosestCar()
     
-    func findClosestCarLeft(car:Car)
-    
-    func findClosestCarRight(car:Car)
-    
-    func findClosestCarDown(car:Car)
-    
-    func findClosestCarUp(car:Car)
-    
-    func closestCarChooser(car: Car)
-    
+    func findClosestCar(car: Car)
 }
