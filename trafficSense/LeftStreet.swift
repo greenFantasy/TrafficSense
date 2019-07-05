@@ -13,17 +13,17 @@ import UIKit
 class LeftStreet:StreetProtocol {
     
     internal var direction = 0 // left is 0, right is 1, down is 2, up is 3
-    internal var carArray:[Car] = []
-    internal var lightArray:[TrafficLight] = []
-    internal var position:Int
-    internal var lanes = 1
+    internal var carArray:[Car] = [] // contains all the cars on the street
+    internal var lightArray:[TrafficLight] = [] // contains all the lights on the street
+    internal var position:Int // is the y-position of the street (x-position in case of up and down streets)
+    internal var lanes = 1 // currently this does nothing, will eventually incorporate this in the future
     
     init(streetPos: Int) {
         position = streetPos
     }
     
     func getDirection() -> Int {
-        return direction
+        return direction // direction never changes, it is always 0 for a leftstreet
     }
     
     func addCar(car: Car) {
@@ -36,6 +36,8 @@ class LeftStreet:StreetProtocol {
     }
     
     func addLight(trafficLight: TrafficLight) {
+        // lightArray is already sorted such that the lights are placed in order of those first on the street are first in the array, and those farther down the street are placed later in the array
+        // since lightArray is pre-sorted, when lights are added, the algo just places the new light in the correct "sorted" position in the already sorted array
         var added = false
         if (lightArray.count > 0) {
             for i in 0...lightArray.count-1 {
@@ -53,6 +55,7 @@ class LeftStreet:StreetProtocol {
     }
     
     func lightFinder(car: Car) -> TrafficLight {
+        // finds the light closest to a car on a given street
         for trafficLight in lightArray {
             if (car.getXPos() > trafficLight.getXPos()) {
                 return trafficLight
@@ -83,6 +86,7 @@ class LeftStreet:StreetProtocol {
     }
     
     func findClosestCar(car:Car) {
+        // finds the closest car directly in front of a certain vehicle
         let x = car.getXPos()
         var closest:Car? = nil
         let streetCarArray = car.getStreet().getCars()

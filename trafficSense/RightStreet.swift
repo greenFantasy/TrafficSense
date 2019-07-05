@@ -35,7 +35,7 @@ class RightStreet:StreetProtocol {
         return position
     }
     
-    func addLight(trafficLight: TrafficLight){
+    func addLight(trafficLight: TrafficLight) {
         var added = false
         if (lightArray.count > 0) {
             for i in 0...lightArray.count-1 {

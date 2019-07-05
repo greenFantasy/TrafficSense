@@ -247,24 +247,6 @@ class GameScene: SKScene {
         }
     }
     
-    func createCar(_ xPos:Int, _ yPos:Int, street: Street) {
-        // let number = Int.random(in: -700 ... 300)
-        let streetCarArray = street.getCars()
-        let car = Car(x: xPos, y: yPos, street: street)
-        self.addChild(car.getNode())
-        carArray.append(car)
-        for vehicle in streetCarArray {
-            if let car2 = car.getClosestCar() {
-                if (street.getDirection() == 0 && car2.getXPos() < vehicle.getXPos() && car.getXPos() > vehicle.getXPos()) {
-                    vehicle.setClosestCar(car: vehicle)
-                }
-                if (street.getDirection() == 1 && car2.getXPos() > vehicle.getXPos() && car.getXPos() < vehicle.getXPos()) {
-                    vehicle.setClosestCar(car: vehicle)
-                }
-            }
-        }
-    }
-    
     func createCar(_ xPos:Int, _ yPos:Int, leftStreet: StreetProtocol) {
         // let number = Int.random(in: -700 ... 300)
         let streetCarArray = leftStreet.getCars()
@@ -283,13 +265,6 @@ class GameScene: SKScene {
         }
     }
     
-    func createLight(_ xPos:Int, _ yPos:Int, street: Street) {
-        let light = TrafficLight(x: xPos, y: yPos, location: street)
-        self.addChild(light.getNode())
-        lightArray.append(light)
-        light.getNode().name = String(lightArray.count)
-    }
-    
     func createLight(trafficLight: TrafficLight) {
         let light = trafficLight
         self.addChild(light.getNode())
@@ -305,8 +280,6 @@ class GameScene: SKScene {
                 for trafficLight in intersection.getAllLights() {
                     createLight(trafficLight: trafficLight)
                 }
-                print("LOOK BELOW")
-                print(intersection.getPosition())
             }
         }
     }

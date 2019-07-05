@@ -11,68 +11,10 @@ import UIKit
 
 class Intersection {
     
-//    private var verticalStreet:Street
-//    private var horizontalStreet:Street
-//    private var xCenter:Int
-//    private var yCenter:Int
-//    private var height = 50
-//    private var width = 50
-//    private var trafficLight0:TrafficLight // light controlling direction = 0 (right to left)
-//    //private var trafficLight1:TrafficLight // light controlling direction = 1 (left to right)
-//    private var trafficLight2:TrafficLight // light controlling direction = 2 (up to down)
-//    //private var trafficLight3:TrafficLight // light controlling direction = 3 (down to up)
-//    private var allFourTrafficLights:[TrafficLight] = [] // all four lights in one array, could have future use
-//
-//
-//    init (street1: Street, street2: Street) {
-//        if (!(street1.getDirection() <= 1 && street2.getDirection() <= 1) && !(street1.getDirection() >= 2 && street2.getDirection() >= 2)) {
-//            if (street1.getDirection() > street2.getDirection()) {
-//                verticalStreet = street1
-//                horizontalStreet = street2
-//            } else {
-//                verticalStreet = street2
-//                horizontalStreet = street1
-//            }
-//            xCenter = verticalStreet.getPosition()
-//            yCenter = horizontalStreet.getPosition()
-//        } else {
-//            xCenter = -10000000
-//            yCenter = -10000000
-//            verticalStreet = Street(heightWidth: -10000, direction: -2)
-//            horizontalStreet = Street(heightWidth: -10000, direction: -2)
-//        }
-//        trafficLight0 = TrafficLight(x: xCenter - width/2 - 15, y: yCenter + height/2 + 15, location: horizontalStreet)
-//        trafficLight2 = TrafficLight(x: xCenter + width/2 + 15, y: yCenter - height/2 - 15, location: verticalStreet)
-//        allFourTrafficLights.append(trafficLight0)
-//        allFourTrafficLights.append(trafficLight2)
-//    }
-//
-//    func isCarAtIntersection(_ car: Car) -> Bool {
-//        if (car.getStreet() === verticalStreet) {
-//            return (car.getYPos() - yCenter < 2 && car.getYPos() - yCenter > -2)
-//        } else if (car.getStreet() === horizontalStreet) {
-//            return (car.getXPos() - xCenter < 2 && car.getXPos() - xCenter > -2)
-//        } else {
-//            return false
-//        }
-//        return false
-//    }
-//
-//    func getVerticalStreet() -> Street {
-//        return verticalStreet
-//    }
-//
-//    func getHorizontalStreet() -> Street {
-//        return horizontalStreet
-//    }
-//
-//    func getPosition() -> [Int] {
-//        return [xCenter,yCenter]
-//    }
-//
-//    func getAllLights() -> [TrafficLight] {
-//        return allFourTrafficLights
-//    }
+    // an intersection is created every time two TwoWay intersect
+    // each intersection automatically creates 4 traffic lights, which are added to the screen and completely functional
+    // each of the 4 traffic lights control one of the 4 directions at the intersection
+    // turning while watching cars on other streets has not been implemented, so cars on different streets are completely unaware of each other
     
     private var xCenter:Int
     private var yCenter:Int
@@ -126,6 +68,11 @@ class Intersection {
     }
     
     func isCarAtIntersection(_ car: Car) -> Bool {
+        
+        // this identifies if a car is at the intersection, first by checking if the car is at a street on the intersection before continuing (that might be unneccesary later but its good practice for now)
+        
+        // if the car within 3 units of the center of the intersection, the car given the option to turn after this method is called
+        
         switch car.getDirection() {
         case 0:
             if (car.getStreet() as! LeftStreet === horizontalTwoWay.getLeftStreet()) {

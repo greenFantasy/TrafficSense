@@ -8,11 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		04A6A3B622C7052A00D511F6 /* Intersection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A6A3B522C7052A00D511F6 /* Intersection.swift */; };
-		04A6A3B822C8C60900D511F6 /* TwoWay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A6A3B722C8C60900D511F6 /* TwoWay.swift */; };
 		04A6A3BA22C8C97500D511F6 /* StreetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A6A3B922C8C97500D511F6 /* StreetProtocol.swift */; };
 		04B01AAD22BBEA72006B3585 /* Car.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B01AAC22BBEA72006B3585 /* Car.swift */; };
 		04B01AAF22BC3765006B3585 /* TrafficLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B01AAE22BC3765006B3585 /* TrafficLight.swift */; };
-		04B01AB122BC5267006B3585 /* Street.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B01AB022BC5267006B3585 /* Street.swift */; };
 		04D5ED4D22CDD2A600824069 /* LeftStreet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D5ED4C22CDD2A600824069 /* LeftStreet.swift */; };
 		04D5ED4F22CDD2BA00824069 /* RightStreet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D5ED4E22CDD2BA00824069 /* RightStreet.swift */; };
 		04D5ED5122CDD2CF00824069 /* UpStreet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D5ED5022CDD2CF00824069 /* UpStreet.swift */; };
@@ -51,11 +49,9 @@
 
 /* Begin PBXFileReference section */
 		04A6A3B522C7052A00D511F6 /* Intersection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Intersection.swift; sourceTree = "<group>"; };
-		04A6A3B722C8C60900D511F6 /* TwoWay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoWay.swift; sourceTree = "<group>"; };
 		04A6A3B922C8C97500D511F6 /* StreetProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreetProtocol.swift; sourceTree = "<group>"; };
 		04B01AAC22BBEA72006B3585 /* Car.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Car.swift; sourceTree = "<group>"; };
 		04B01AAE22BC3765006B3585 /* TrafficLight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficLight.swift; sourceTree = "<group>"; };
-		04B01AB022BC5267006B3585 /* Street.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Street.swift; sourceTree = "<group>"; };
 		04D5ED4C22CDD2A600824069 /* LeftStreet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftStreet.swift; sourceTree = "<group>"; };
 		04D5ED4E22CDD2BA00824069 /* RightStreet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightStreet.swift; sourceTree = "<group>"; };
 		04D5ED5022CDD2CF00824069 /* UpStreet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpStreet.swift; sourceTree = "<group>"; };
@@ -135,7 +131,6 @@
 				D988DA7F22B2ED7C005E54A2 /* Actions.sks */,
 				D988DA8122B2ED7C005E54A2 /* GameScene.swift */,
 				04A6A3B522C7052A00D511F6 /* Intersection.swift */,
-				04A6A3B722C8C60900D511F6 /* TwoWay.swift */,
 				04D5ED5422CDE1A900824069 /* TwoWayHorizontal.swift */,
 				04D5ED5622CE02F800824069 /* TwoWayVertical.swift */,
 				04D5ED5022CDD2CF00824069 /* UpStreet.swift */,
@@ -143,7 +138,6 @@
 				04D5ED4C22CDD2A600824069 /* LeftStreet.swift */,
 				04D5ED4E22CDD2BA00824069 /* RightStreet.swift */,
 				04A6A3B922C8C97500D511F6 /* StreetProtocol.swift */,
-				04B01AB022BC5267006B3585 /* Street.swift */,
 				04B01AAE22BC3765006B3585 /* TrafficLight.swift */,
 				D988DA8322B2ED7C005E54A2 /* GameViewController.swift */,
 				04E4750322BB2F1C002FF86D /* GameVC.swift */,
@@ -312,7 +306,6 @@
 				04D5ED5322CDD2E400824069 /* DownStreet.swift in Sources */,
 				04D5ED5722CE02F800824069 /* TwoWayVertical.swift in Sources */,
 				04B01AAF22BC3765006B3585 /* TrafficLight.swift in Sources */,
-				04A6A3B822C8C60900D511F6 /* TwoWay.swift in Sources */,
 				04B01AAD22BBEA72006B3585 /* Car.swift in Sources */,
 				04A6A3B622C7052A00D511F6 /* Intersection.swift in Sources */,
 				04E4750422BB2F1C002FF86D /* GameVC.swift in Sources */,
@@ -321,7 +314,6 @@
 				D988DA7C22B2ED7C005E54A2 /* AppDelegate.swift in Sources */,
 				04A6A3BA22C8C97500D511F6 /* StreetProtocol.swift in Sources */,
 				04D5ED4F22CDD2BA00824069 /* RightStreet.swift in Sources */,
-				04B01AB122BC5267006B3585 /* Street.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

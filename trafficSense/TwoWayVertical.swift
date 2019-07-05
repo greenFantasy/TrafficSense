@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class TwoWayVertical {
-    
+    // contains two streets going in opposite directions, one going up and one going down
     private var downStreet:DownStreet
     private var upStreet:UpStreet
     private var midline:Int

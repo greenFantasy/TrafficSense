@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class TwoWayHorizontal {
-    
+    // contains two streets, one going left and another going right
     private var leftStreet:LeftStreet
     private var rightStreet:RightStreet
     private var midline:Int
