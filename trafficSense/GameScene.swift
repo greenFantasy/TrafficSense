@@ -15,18 +15,20 @@ class GameScene: SKScene {
     var graphs = [String : GKGraph]()
     
     private var lastUpdateTime : TimeInterval = 0
+    private var car : SKShapeNode?
     private var spinnyNode : SKShapeNode?
     private var light : TrafficLight?
     private var carArray:[Car] = []
+    private var firstStreet = Street(heightWidth: 0, direction: 0)
+    private var carCar : Car?
     private var lightArray:[TrafficLight] = []
+    private var streetArrayHorizontal:[Street] = []
+    private var streetArrayVertical:[Street] = []
     private var intersectionArray:[Intersection] = []
     private var scoreLabel = SKLabelNode(fontNamed: "Helvetica Neue UltraLight")
     private var score = 0  // Score variable
     private var timer:Timer?  // Creates optional of type Timer
     private var timeLeft = 60  //Variable used in timer for setting amount of time left
-    private var streetArray:[StreetProtocol] = []
-    private var twoWayHorizontalArray:[TwoWayHorizontal] = []
-    private var twoWayVerticalArray:[TwoWayVertical] = []
     
     override func sceneDidLoad() {
         self.lastUpdateTime = 0
@@ -51,23 +53,15 @@ class GameScene: SKScene {
         
         self.addChild(scoreLabel)  // Adds the scoreLabel to the scene
         
-        let firstTwoWay = TwoWayHorizontal(midline: 100)
-        twoWayHorizontalArray.append(firstTwoWay)
-        createCar(-100, 100, leftStreet: firstTwoWay.getLeftStreet())
-        createCar(-100, 100, leftStreet: firstTwoWay.getRightStreet())
+        let secondStreet = Street(heightWidth: -300, direction: 0)
+        streetArrayHorizontal.append(secondStreet)
         
-        let secondTwoWay = TwoWayVertical(midline: 100)
-        twoWayVerticalArray.append(secondTwoWay)
-        createCar(100, -100, leftStreet: secondTwoWay.getDownStreet())
-        createCar(100, -200, leftStreet: secondTwoWay.getUpStreet())
-        
-        let third = TwoWayVertical(midline: -300)
-        twoWayVerticalArray.append(third)
-        createCar(-300, -100, leftStreet: third.getDownStreet())
-        createCar(-300, -200, leftStreet: third.getUpStreet())
-        
-        let fourth = TwoWayHorizontal(midline: -300)
-        twoWayHorizontalArray.append(fourth)
+        let thirdStreetVertical = Street(heightWidth: 0,direction: 2)
+        let testStreet = Street(heightWidth: 200,direction: 2)
+        streetArrayVertical.append(thirdStreetVertical)
+        streetArrayVertical.append(testStreet)
+        // createLight(0, 300, street: thirdStreetVertical)
+        createCar(0, -200, street: thirdStreetVertical)
         
         intersectionCreator() // creates all the intersections based on the horizontal and vertical streets created above
         
@@ -127,6 +121,7 @@ class GameScene: SKScene {
     }
     
     func move() {
+        
         var elementsToRemove:[Int] = []
         for i in 0...carArray.count-1 {
             let vehicle = carArray[i]
@@ -149,31 +144,31 @@ class GameScene: SKScene {
                 
             }
             if (vehicle.getXPos() <= Int(-self.scene!.size.width/2) && vehicle.getDirection() == 0) {
-                createCar(Int(self.scene!.size.width/2) + 100, vehicle.getYPos(), leftStreet: vehicle.getStreet())
+                createCar(Int(self.scene!.size.width/2) + 100, vehicle.getYPos(), street: vehicle.getStreet())
                 elementsToRemove.append(i)
                 removeCar(vehicle)
                 if (carArray.count < 25) {
-                    //createCar(600, 0, street: firstStreet)
+                    createCar(600, 0, street: firstStreet)
                 }
             }
             else if (vehicle.getYPos() <= Int(-self.scene!.size.height/2) && vehicle.getDirection() == 2) {
-                createCar(vehicle.getXPos(), Int(self.scene!.size.height/2), leftStreet: vehicle.getStreet())
+                createCar(vehicle.getXPos(), Int(self.scene!.size.height/2), street: vehicle.getStreet())
                 elementsToRemove.append(i)
                 removeCar(vehicle)
                 if (carArray.count < 25) {
-                    createCar(vehicle.getXPos(), 1000, leftStreet: vehicle.getStreet())
+                    createCar(vehicle.getXPos(), 1000, street: vehicle.getStreet())
                 }
             }
             else if (vehicle.getYPos() >= Int(self.scene!.size.height/2) && vehicle.getDirection() == 3) {
-                createCar(vehicle.getXPos(), Int(-self.scene!.size.height/2), leftStreet: vehicle.getStreet())
+                createCar(vehicle.getXPos(), Int(-self.scene!.size.height/2), street: vehicle.getStreet())
                 elementsToRemove.append(i)
                 removeCar(vehicle)
                 if (carArray.count < 25) {
-                    //createCar(vehicle.getXPos(), -vehicle.getYPos() - 100, leftStreet: vehicle.getStreet())
+                    createCar(vehicle.getXPos(), -vehicle.getYPos() - 100, street: vehicle.getStreet())
                 }
             }
             else if (vehicle.getXPos() >= Int(self.scene!.size.width/2) && vehicle.getDirection() == 1) {
-                createCar(Int(-self.scene!.size.width/2), vehicle.getYPos(), leftStreet: vehicle.getStreet())
+                createCar(Int(-self.scene!.size.width/2), vehicle.getYPos(), street: vehicle.getStreet())
                 elementsToRemove.append(i)
                 removeCar(vehicle)
             }
@@ -281,10 +276,9 @@ class GameScene: SKScene {
         }
     }
     
-    func createCar(_ xPos:Int, _ yPos:Int, leftStreet: StreetProtocol) {
+    func createCar(_ xPos:Int, _ yPos:Int, street: Street) {
         // let number = Int.random(in: -700 ... 300)
-
-        let streetCarArray = leftStreet.getCars()
+        let streetCarArray = street.getCars()
         let number = Int.random(in: 1 ... 2)  // This code generates a random number 1 or 2 to replicate 50% probability for any event
         var car : Car?
         if (number == 1) {
@@ -297,26 +291,41 @@ class GameScene: SKScene {
         self.addChild(car!.getNode())
         carArray.append(car!)
         for vehicle in streetCarArray {
-            if let car2 = car.getClosestCar() {
-                if (leftStreet.getDirection() == 0 && car2.getXPos() < vehicle.getXPos() && car.getXPos() > vehicle.getXPos()) {
+            if let car2 = car!.getClosestCar() {
+                if (street.getDirection() == 0 && car2.getXPos() < vehicle.getXPos() && car!.getXPos() > vehicle.getXPos()) {
                     vehicle.setClosestCar(car: vehicle)
                 }
-                if (leftStreet.getDirection() == 1 && car2.getXPos() > vehicle.getXPos() && car.getXPos() < vehicle.getXPos()) {
-
+                if (street.getDirection() == 1 && car2.getXPos() > vehicle.getXPos() && car!.getXPos() < vehicle.getXPos()) {
                     vehicle.setClosestCar(car: vehicle)
                 }
             }
         }
     }
     
+    func createLight(_ xPos:Int, _ yPos:Int, street: Street) {
+        let light = TrafficLight(x: xPos, y: yPos, location: street)
+        self.addChild(light.getNode())
+        lightArray.append(light)
+        light.getNode().name = String(lightArray.count)
+    }
+    
+    func createLight(trafficLight: TrafficLight) {
+        let light = trafficLight
+        self.addChild(light.getNode())
+        lightArray.append(light)
+        light.getNode().name = String(lightArray.count)
+    }
+    
     func intersectionCreator() {
-        for horizontalTwoWay in twoWayHorizontalArray {
-            for verticalTwoWay in twoWayVerticalArray {
-                let intersection = Intersection(horizontal: horizontalTwoWay, vertical: verticalTwoWay)
+        for horizontalStreet in streetArrayHorizontal {
+            for verticalStreet in streetArrayVertical {
+                let intersection = Intersection(street1: horizontalStreet, street2: verticalStreet)
                 intersectionArray.append(intersection)
                 for trafficLight in intersection.getAllLights() {
                     createLight(trafficLight: trafficLight)
                 }
+                print("LOOK BELOW")
+                print(intersection.getPosition())
             }
         }
     }
@@ -324,27 +333,17 @@ class GameScene: SKScene {
     func isCarAtAnyIntersectionChecker(_ car: Car) -> Intersection? {
         for intersection in intersectionArray {
             if (intersection.isCarAtIntersection(car)) {
-                print(car.getPositionArray())
                 return intersection
             }
         }
         return nil
     }
     
-    func getStreetToTurnOn (car: Car, intersection: Intersection) -> StreetProtocol {
-        let number = Int.random(in: 0 ... 1)
+    func getStreetToTurnOn (car: Car, intersection: Intersection) -> Street {
         if (car.getDirection() <= 1) {
-            if number == 0 {
-                return intersection.getVerticalTwoWay().getDownStreet()
-            } else {
-                return intersection.getVerticalTwoWay().getUpStreet()
-            }
+            return intersection.getVerticalStreet()
         } else {
-            if number == 0 {
-                return intersection.getHorizontalTwoWay().getLeftStreet()
-            } else {
-                return intersection.getHorizontalTwoWay().getRightStreet()
-            }
+            return intersection.getHorizontalStreet()
         }
     }
     
