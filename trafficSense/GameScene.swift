@@ -27,6 +27,8 @@ class GameScene: SKScene {
     private var streetArray:[StreetProtocol] = []
     private var twoWayHorizontalArray:[TwoWayHorizontal] = []
     private var twoWayVerticalArray:[TwoWayVertical] = []
+    private var gameOverLabel = SKLabelNode(fontNamed: "Helvetica Neue UltraLight")
+    
     
     override func sceneDidLoad() {
         self.lastUpdateTime = 0
@@ -34,6 +36,9 @@ class GameScene: SKScene {
         /*  This next block of code sets a few properties for the score label which will also include time left in the game. Currently its position is set relative to the screen size so that multiple devices can be supported.
         */
         
+        self.addChild(gameOverLabel)
+        gameOverLabel.isHidden = true
+
         scoreLabel.text = ""
         scoreLabel.fontSize = 65
         scoreLabel.fontColor = SKColor.white
@@ -169,7 +174,6 @@ class GameScene: SKScene {
             }
         }
         removeElementsFromArray(elementsToRemove: elementsToRemove, array: &carArray)
-        
     }
     
     func removeCar(_ vehicle: Car) {
@@ -273,7 +277,6 @@ class GameScene: SKScene {
     
     func createCar(_ xPos:Int, _ yPos:Int, leftStreet: StreetProtocol) {
         // let number = Int.random(in: -700 ... 300)
-
         let streetCarArray = leftStreet.getCars()
         let number = Int.random(in: 1 ... 2)  // This code generates a random number 1 or 2 to replicate 50% probability for any event
         var car : Car?
@@ -292,7 +295,7 @@ class GameScene: SKScene {
                     vehicle.setClosestCar(car: vehicle)
                 }
                 if (leftStreet.getDirection() == 1 && car2.getXPos() > vehicle.getXPos() && car!.getXPos() < vehicle.getXPos()) {
-
+                    
                     vehicle.setClosestCar(car: vehicle)
                 }
             }
@@ -330,6 +333,67 @@ class GameScene: SKScene {
     
     func getStreetToTurnOn (car: Car, intersection: Intersection) -> StreetProtocol {
         let number = Int.random(in: 0 ... 1)
+    
+    func checkCollisions() {
+        
+        var hitCars: [Car] = []
+            
+            //var hitCars: [Car] = []
+            //enumerateChildNodes(withName: "car") { node, _ in
+              //  let car2 = node as! SKShapeNode
+                //    if car2.frame.intersects(car2.frame){
+                  //      hitCars.append(car2)
+                    //    print("HIT")
+            //}
+            
+        //}
+        
+        for i in 0...carArray.count-2 {
+            if (carArray[i].getXPos() > -100 && carArray[i].getXPos()<100 && carArray[i].getYPos() > -100 && carArray[i].getYPos()<100 && carArray[i].getIntersected() == false){
+                
+                for j in i+1...carArray.count-1{
+                    if (carArray[i].getNode().frame.intersects(carArray[j].getNode().frame)){
+                        
+                        carArray[i].changeIntersected()
+                        carArray[j].changeIntersected()
+                        hitCars.append(carArray[j])
+                        hitCars.append(carArray[i])
+                        
+                        gameOverScreen()
+                    }
+                    
+                    
+                }
+            }
+            
+        }
+        
+        if (hitCars.count>0){
+            
+            for i in 0...hitCars.count-1 {
+                
+                if (i%2==0) {
+                
+                    print("hit car")
+                }
+            
+            }
+            
+        }
+        
+    }
+    
+    
+    
+    func gameOverScreen() {
+        
+        gameOverLabel.isHidden = false
+        gameOverLabel.text = "Game Over!"
+    }
+    
+    
+    func getStreetToTurnOn (car: Car, intersection: Intersection) -> StreetProtocol {
+        let number = Int.random(in: 0 ... 1)
         if (car.getDirection() <= 1) {
             if number == 0 {
                 return intersection.getVerticalTwoWay().getDownStreet()
@@ -347,7 +411,7 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         move()
-        
+        checkCollisions()
         // Called before each frame is rendered
         
         // Initialize _lastUpdateTime if it has not already been

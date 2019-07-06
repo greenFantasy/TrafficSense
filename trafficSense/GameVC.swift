@@ -17,6 +17,8 @@ class GameVC: UIViewController {
     
     @IBOutlet weak var gameViewSK: SKView!
     
+    @IBOutlet weak var gameOverLabel: UILabel!
+    
     override func viewDidLoad() {
         
         

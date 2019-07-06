@@ -20,6 +20,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     private var currentStreet:StreetProtocol
     private var closestCar: Car?
     private var intersectionArray:[Intersection] = [] // contains all intersections a car has turned at, a car cannot turn at the same intersection twice
+    private var intersected = false
     
     //private let finalDestination
     
@@ -139,6 +140,16 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         default:
             return [0,0]
         }
+    }
+    
+    func getIntersected() -> Bool {
+        return intersected
+    }
+    
+    func changeIntersected(){
+        
+        intersected = !intersected
+        
     }
     
     func isAtIntersection (intersection: Intersection) -> Bool {
