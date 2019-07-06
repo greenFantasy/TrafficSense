@@ -16,9 +16,9 @@ class TrafficLight {
     private var yPos:Int
     private var shapeNode = SKShapeNode(circleOfRadius: 30)
     private var state:Int = -1
-    private var street:StreetProtocol
+    private var street:Street
     
-    init (x:Int, y:Int, location: StreetProtocol) {
+    init (x:Int, y:Int, location: Street) {
         xPos = x
         yPos = y
         street = location
@@ -29,7 +29,7 @@ class TrafficLight {
     init(fakeLight: Int) {
         xPos = -100000
         yPos = -100000
-        street = LeftStreet(streetPos: -10000000)
+        street = Street(heightWidth: -100000, direction: 0)
         state = -2 // if state == -2, then the light will not be added to the scene
     }
     
@@ -68,7 +68,6 @@ class TrafficLight {
     }
     
     func changeState () {
-        // changes between green (1) and red (-1), eventually yellow will be 0
         if (state > -1) {
             state -= 2
         } else if (state == -1) {
