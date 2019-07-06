@@ -54,6 +54,13 @@
                             <skView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EwG-63-zVp">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </skView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FXw-Ww-SQK">
+                                <rect key="frame" x="186" y="437" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -65,6 +72,7 @@
                         <viewLayoutGuide key="safeArea" id="BA6-80-s1i"/>
                     </view>
                     <connections>
+                        <outlet property="gameOverLabel" destination="FXw-Ww-SQK" id="xAC-yP-vcq"/>
                         <outlet property="gameView" destination="upZ-VW-H4F" id="Sn9-3e-jYY"/>
                         <outlet property="gameViewSK" destination="EwG-63-zVp" id="0Hc-Db-7Tz"/>
                     </connections>

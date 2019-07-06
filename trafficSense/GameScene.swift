@@ -28,9 +28,16 @@ class GameScene: SKScene {
     private var streetArrayVertical:[Street] = []
     private var intersectionArray:[Intersection] = []
     
+    private var gameOverLabel = SKLabelNode(fontNamed: "Helvetica Neue UltraLight")
+    
+    
     override func sceneDidLoad() {
 
         self.lastUpdateTime = 0
+        
+        self.addChild(gameOverLabel)
+        gameOverLabel.isHidden = true
+        
         streetArrayHorizontal.append(firstStreet)
         carCar = Car(x:0, y:70, street: firstStreet)
 //        light = TrafficLight(x:-200, y:120, location: firstStreet)
@@ -147,7 +154,7 @@ class GameScene: SKScene {
                 createCar(Int(self.scene!.size.width/2) + 100, vehicle.getYPos(), street: vehicle.getStreet())
                 elementsToRemove.append(i)
                 removeCar(vehicle)
-                if (carArray.count < 25) {
+                if (carArray.count < 10) {
                     createCar(600, 0, street: firstStreet)
                 }
             }
@@ -155,7 +162,7 @@ class GameScene: SKScene {
                 createCar(vehicle.getXPos(), Int(self.scene!.size.height/2), street: vehicle.getStreet())
                 elementsToRemove.append(i)
                 removeCar(vehicle)
-                if (carArray.count < 25) {
+                if (carArray.count < 10) {
                     createCar(vehicle.getXPos(), 1000, street: vehicle.getStreet())
                 }
             }
@@ -163,7 +170,7 @@ class GameScene: SKScene {
                 createCar(vehicle.getXPos(), Int(-self.scene!.size.height/2), street: vehicle.getStreet())
                 elementsToRemove.append(i)
                 removeCar(vehicle)
-                if (carArray.count < 25) {
+                if (carArray.count < 10) {
                     createCar(vehicle.getXPos(), -vehicle.getYPos() - 100, street: vehicle.getStreet())
                 }
             }
@@ -280,6 +287,14 @@ class GameScene: SKScene {
         // let number = Int.random(in: -700 ... 300)
         let streetCarArray = street.getCars()
         let car = Car(x: xPos, y: yPos, street: street)
+        
+        //let car2 = car.getNode()
+        
+        //car2.name = "car"
+        
+        
+        
+            
         self.addChild(car.getNode())
         carArray.append(car)
         for vehicle in streetCarArray {
@@ -331,6 +346,69 @@ class GameScene: SKScene {
         return nil
     }
     
+    
+    func checkCollisions() {
+        
+        var hitCars: [Car] = []
+            
+            //var hitCars: [Car] = []
+            //enumerateChildNodes(withName: "car") { node, _ in
+              //  let car2 = node as! SKShapeNode
+                //    if car2.frame.intersects(car2.frame){
+                  //      hitCars.append(car2)
+                    //    print("HIT")
+            //}
+            
+        //}
+        
+        for i in 0...carArray.count-2{
+            
+            if (carArray[i].getXPos() > -100 && carArray[i].getXPos()<100 && carArray[i].getYPos() > -100 && carArray[i].getYPos()<100 && carArray[i].getIntersected() == false){
+                
+                for j in i+1...carArray.count-1{
+                
+                    
+                    
+                    if (carArray[i].getNode().frame.intersects(carArray[j].getNode().frame)){
+                        
+                        carArray[i].changeIntersected()
+                        carArray[j].changeIntersected()
+                        hitCars.append(carArray[j])
+                        hitCars.append(carArray[i])
+                        
+                        gameOverScreen()
+                }
+                    
+                    
+            }
+        }
+            
+        }
+        
+        if (hitCars.count>0){
+            
+            for i in 0...hitCars.count-1 {
+                
+                if (i%2==0) {
+                
+                    print("hit car")
+            }
+            
+        }
+            
+        }
+        
+    }
+    
+    
+    
+    func gameOverScreen() {
+        
+        gameOverLabel.isHidden = false
+        gameOverLabel.text = "Game Over!"
+    }
+    
+    
     func getStreetToTurnOn (car: Car, intersection: Intersection) -> Street {
         if (car.getDirection() <= 1) {
             return intersection.getVerticalStreet()
@@ -341,6 +419,7 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         move()
+        checkCollisions()
         
         // Called before each frame is rendered
         

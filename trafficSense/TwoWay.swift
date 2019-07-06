@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class TwoWay {
+    
     init(heightWidth1: Int, direction1: Int, heightWidth2: Int, direction2: Int) {
         
         
