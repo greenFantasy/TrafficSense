@@ -208,7 +208,6 @@ class GameScene: SKScene {
             let vehicleWidth = boundingBox.size.width
             newOffset = newOffset + Double(vehicleWidth) + base
         }
-        print(newOffset)
         return newOffset
     }
     
@@ -324,15 +323,11 @@ class GameScene: SKScene {
     func isCarAtAnyIntersectionChecker(_ car: Car) -> Intersection? {
         for intersection in intersectionArray {
             if (intersection.isCarAtIntersection(car)) {
-                print(car.getPositionArray())
                 return intersection
             }
         }
         return nil
     }
-    
-    func getStreetToTurnOn (car: Car, intersection: Intersection) -> StreetProtocol {
-        let number = Int.random(in: 0 ... 1)
     
     func checkCollisions() {
         
@@ -358,7 +353,6 @@ class GameScene: SKScene {
                         carArray[j].changeIntersected()
                         hitCars.append(carArray[j])
                         hitCars.append(carArray[i])
-                        
                         gameOverScreen()
                     }
                     
@@ -373,7 +367,6 @@ class GameScene: SKScene {
             for i in 0...hitCars.count-1 {
                 
                 if (i%2==0) {
-                
                     print("hit car")
                 }
             
@@ -382,8 +375,6 @@ class GameScene: SKScene {
         }
         
     }
-    
-    
     
     func gameOverScreen() {
         
