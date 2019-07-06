@@ -30,17 +30,7 @@ class GameScene: SKScene {
     
     override func sceneDidLoad() {
         self.lastUpdateTime = 0
-        streetArrayHorizontal.append(firstStreet)
-        carCar = Car(x:0, y:70, street: firstStreet, imageNamed: "Green Pickup")
-
-        self.car = self.childNode(withName: "//car") as? SKShapeNode
-        if let car = self.car {
-            car.fillColor = SKColor.blue
-            carCar!.setNode(node: car)
-            carCar!.setPos(newX: 250, newY: 0)
-            carArray.append(carCar!)
-        }
-        
+   
         /*  This next block of code sets a few properties for the score label which will also include time left in the game. Currently its position is set relative to the screen size so that multiple devices can be supported.
         */
         
@@ -288,25 +278,32 @@ class GameScene: SKScene {
         let number = Int.random(in: 1 ... 2)  // This code generates a random number 1 or 2 to replicate 50% probability for any event
         var car : Car?
         if (number == 1) {
-            car = Car(x: xPos, y: yPos, street: street, imageNamed: "car") // If 1, a Car instance will be created with the image being that of a car
+            car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "car") // If 1, a Car instance will be created with the image being that of a car
         }
         else {
-            car = Car(x: xPos, y: yPos, street: street, imageNamed: "Green Pickup") // If 2, a Car instance will be created with the image being that of a pickup truck
+            car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "Green Pickup") // If 2, a Car instance will be created with the image being that of a pickup truck
         }
         
         self.addChild(car!.getNode())
         carArray.append(car!)
         for vehicle in streetCarArray {
-            if let car2 = car.getClosestCar() {
-                if (leftStreet.getDirection() == 0 && car2.getXPos() < vehicle.getXPos() && car.getXPos() > vehicle.getXPos()) {
+            if let car2 = car!.getClosestCar() {
+                if (leftStreet.getDirection() == 0 && car2.getXPos() < vehicle.getXPos() && car!.getXPos() > vehicle.getXPos()) {
                     vehicle.setClosestCar(car: vehicle)
                 }
-                if (leftStreet.getDirection() == 1 && car2.getXPos() > vehicle.getXPos() && car.getXPos() < vehicle.getXPos()) {
+                if (leftStreet.getDirection() == 1 && car2.getXPos() > vehicle.getXPos() && car!.getXPos() < vehicle.getXPos()) {
 
                     vehicle.setClosestCar(car: vehicle)
                 }
             }
         }
+    }
+    
+    func createLight(trafficLight: TrafficLight) {
+        let light = trafficLight
+        self.addChild(light.getNode())
+        lightArray.append(light)
+        light.getNode().name = String(lightArray.count)
     }
     
     func intersectionCreator() {
