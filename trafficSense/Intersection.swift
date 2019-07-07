@@ -42,6 +42,10 @@ class Intersection {
         allFourLights.append(lightRight)
         allFourLights.append(lightDown)
         allFourLights.append(lightUp)
+        lightLeft.setIntersection(intersection: self)
+        lightRight.setIntersection(intersection: self)
+        lightDown.setIntersection(intersection: self)
+        lightUp.setIntersection(intersection: self)
     }
     
     func getAllLights() -> [TrafficLight] {

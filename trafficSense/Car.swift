@@ -13,7 +13,7 @@ import UIKit
 
 class Car: SKShapeNode {  // Car implements SKShapeNode class
     
-    private var shapeNode = SKShapeNode(circleOfRadius: 40)
+    private var shapeNode = SKShapeNode(rectOf: CGSize(width: 60, height: 40))
     private let topSpeed:Double = 5.0
     private var xPos:Int
     private var yPos:Int
@@ -59,8 +59,10 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     }
     
     func move(xVel:Int, yVel:Int) {
+        //if (!intersected) {
         xPos += xVel
         yPos += yVel
+        //}
         updateShapeNodePos()
     }
     
@@ -147,9 +149,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     }
     
     func changeIntersected(){
-        
-        intersected = !intersected
-        
+        intersected = true
     }
     
     func isAtIntersection (intersection: Intersection) -> Bool {

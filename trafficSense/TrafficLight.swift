@@ -17,6 +17,8 @@ class TrafficLight {
     private var shapeNode = SKShapeNode(circleOfRadius: 30)
     private var state:Int = -1
     private var street:StreetProtocol
+    private var radius = 30
+    private var intersection:Intersection?
     
     init (x:Int, y:Int, location: StreetProtocol) {
         xPos = x
@@ -31,6 +33,10 @@ class TrafficLight {
         yPos = -100000
         street = LeftStreet(streetPos: -10000000)
         state = -2 // if state == -2, then the light will not be added to the scene
+    }
+    
+    func getRadius() -> Int {
+        return radius
     }
     
     func getXPos() -> Int {
@@ -89,4 +95,15 @@ class TrafficLight {
         }
     }
     
+    func getIntersection() -> Intersection {
+        if let inter = intersection {
+            return inter
+        } else {
+            return Intersection(horizontal: TwoWayHorizontal(midline: -10000), vertical: TwoWayVertical(midline: -100000))
+        }
+    }
+    
+    func setIntersection(intersection: Intersection) {
+        self.intersection = intersection
+    }
 }

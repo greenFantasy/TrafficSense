@@ -190,14 +190,16 @@ class GameScene: SKScene {
     }
     
     func isVehicleCloseToLight(vehicle: Car, light: TrafficLight) -> Bool {
+        let width = light.getIntersection().getWidth() + 3 * light.getRadius()
+        let height = light.getIntersection().getHeight() + 3 * light.getRadius()
         if vehicle.getDirection() == 0 {
-            return vehicle.getXPos() > light.getXPos() && vehicle.getXPos() < light.getXPos() + 10
+            return vehicle.getXPos() > light.getXPos() + width && vehicle.getXPos() < light.getXPos() + width + 50
         } else if vehicle.getDirection() == 2 {
-            return vehicle.getYPos() > light.getYPos() && vehicle.getYPos() < light.getYPos() + 10
+            return vehicle.getYPos() > light.getYPos() + height && vehicle.getYPos() < light.getYPos() + height + 50
         } else if vehicle.getDirection() == 1 {
-            return vehicle.getXPos() < light.getXPos() && vehicle.getXPos() > light.getXPos() - 10
+            return vehicle.getXPos() < light.getXPos() - width && vehicle.getXPos() > light.getXPos() - width - 50
         } else {
-            return vehicle.getYPos() < light.getYPos() && vehicle.getYPos() > light.getYPos() - 10
+            return vehicle.getYPos() < light.getYPos() - height && vehicle.getYPos() > light.getYPos() - height - 50
         }
     }
     
@@ -332,23 +334,13 @@ class GameScene: SKScene {
     func checkCollisions() {
         
         var hitCars: [Car] = []
-            
-            //var hitCars: [Car] = []
-            //enumerateChildNodes(withName: "car") { node, _ in
-              //  let car2 = node as! SKShapeNode
-                //    if car2.frame.intersects(car2.frame){
-                  //      hitCars.append(car2)
-                    //    print("HIT")
-            //}
-            
-        //}
         
         for i in 0...carArray.count-2 {
-            if (carArray[i].getXPos() > -100 && carArray[i].getXPos()<100 && carArray[i].getYPos() > -100 && carArray[i].getYPos()<100 && carArray[i].getIntersected() == false){
-                
-                for j in i+1...carArray.count-1{
-                    if (carArray[i].getNode().frame.intersects(carArray[j].getNode().frame)){
-                        
+            if (carArray[i].getXPos() > -Int(scene!.size.width)/2 && carArray[i].getXPos() <  Int(scene!.frame.width)/2 && carArray[i].getYPos() > -Int(scene!.size.height)/2 && carArray[i].getYPos() < Int(scene!.size.height)/2)
+            {
+                for j in i+1...carArray.count-1 {
+                    if (carArray[i].getNode().frame.intersects(carArray[j].getNode().frame) && (!carArray[i].getIntersected() || !carArray[j].getIntersected()) )
+                    {
                         carArray[i].changeIntersected()
                         carArray[j].changeIntersected()
                         hitCars.append(carArray[j])
