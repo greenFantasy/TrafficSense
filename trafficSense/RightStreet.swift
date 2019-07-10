@@ -100,4 +100,29 @@ class RightStreet:StreetProtocol {
             }
         }
     }
+    
+    func isStreetFree(startingPos: Int, endingPos: Int) -> Car? {
+        var lower = 0
+        var upper = 0
+        var closeCar: Car?
+        if (startingPos < endingPos) {
+            lower = startingPos
+            upper = endingPos
+        } else {
+            lower = endingPos
+            upper = startingPos
+        }
+        for vehicle in carArray {
+            if (lower < vehicle.getXPos() && upper > vehicle.getXPos()) {
+                if let car = closeCar {
+                    if vehicle.getXPos() > car.getXPos() {
+                        closeCar = vehicle
+                    }
+                } else {
+                    closeCar = vehicle
+                }
+            }
+        }
+        return closeCar
+    }
 }

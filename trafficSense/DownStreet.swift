@@ -98,4 +98,29 @@ class DownStreet:StreetProtocol {
             }
         }
     }
+    
+    func isStreetFree(startingPos: Int, endingPos: Int) -> Car? {
+        var lower = 0
+        var upper = 0
+        var closeCar: Car?
+        if (startingPos < endingPos) {
+            lower = startingPos
+            upper = endingPos
+        } else {
+            lower = endingPos
+            upper = startingPos
+        }
+        for vehicle in carArray {
+            if (lower < vehicle.getYPos() && upper > vehicle.getYPos()) {
+                if let car = closeCar {
+                    if vehicle.getYPos() < car.getYPos() {
+                        closeCar = vehicle
+                    }
+                } else {
+                    closeCar = vehicle
+                }
+            }
+        }
+        return closeCar
+    }
 }

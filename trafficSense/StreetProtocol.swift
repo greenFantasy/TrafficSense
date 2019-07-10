@@ -34,4 +34,6 @@ protocol StreetProtocol {
     func updateClosestCar()
     
     func findClosestCar(car: Car)
+    
+    func isStreetFree(startingPos: Int, endingPos: Int) -> Car?
 }

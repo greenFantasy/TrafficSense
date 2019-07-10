@@ -21,6 +21,8 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     private var closestCar: Car?
     private var intersectionArray:[Intersection] = [] // contains all intersections a car has turned at, a car cannot turn at the same intersection twice
     private var intersected = false
+    private var turnArray:[Int] = [] // when 0, it's going to continue straight, when 1, the car will turn right, when 2, the car will turn left
+    private var completedTurnsArray:[Bool] = []
     
     //private let finalDestination
     
@@ -36,6 +38,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         currentStreet.addCar(car: self)
         updateShapeNodePos()
         fixPosOnStreet()
+        updateTurnArray()
     }
     
     func fixPosOnStreet() {
@@ -171,5 +174,138 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
             intersectionArray.append(intersection)
             fixPosOnStreet()
         }
+    }
+    
+    func makeRightTurn(intersection: Intersection) {
+        if completedTurnsArray[intersectionArray.count - 1] == false {
+            currentStreet.removeCar(car: self)
+            let direction = currentStreet.getDirection()
+            if direction == 0 {
+                currentStreet = intersection.getVerticalTwoWay().getUpStreet()
+            } else if (direction == 1) {
+                currentStreet = intersection.getVerticalTwoWay().getDownStreet()
+            } else if direction == 2 {
+                currentStreet = intersection.getHorizontalTwoWay().getLeftStreet()
+            } else if direction == 3 {
+                currentStreet = intersection.getHorizontalTwoWay().getRightStreet()
+            }
+            currentStreet.addCar(car: self)
+            fixPosOnStreet()
+            completedTurnsArray[intersectionArray.count - 1] = true
+        }
+    }
+    
+    func makeLeftTurn(intersection: Intersection) {
+        if !isLastTurnCompleted() {
+            let oppStreet = intersection.getOppositeStreet(street: currentStreet)
+            let direction = currentStreet.getDirection()
+            if direction == 0 {
+                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[0] + 10, endingPos: intersection.getPosition()[0] - 100) {
+                    if closeCar.getLastTurn() == 2 && !closeCar.isLastTurnCompleted() {
+                        leftTurner(direction: direction, intersection: intersection)
+                    }
+                } else {
+                    leftTurner(direction: direction, intersection: intersection)
+                }
+            } else if (direction == 1) {
+                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[0] - 10, endingPos: intersection.getPosition()[0] + 100) {
+                    if closeCar.getLastTurn() == 2 && !closeCar.isLastTurnCompleted() {
+                        leftTurner(direction: direction, intersection: intersection)
+                    }
+                } else {
+                    leftTurner(direction: direction, intersection: intersection)
+                }
+            } else if direction == 2 {
+                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[0] + 10, endingPos: intersection.getPosition()[0] - 100) {
+                    if closeCar.getLastTurn() == 2 && !closeCar.isLastTurnCompleted() {
+                        leftTurner(direction: direction, intersection: intersection)
+                    }
+                } else {
+                    leftTurner(direction: direction, intersection: intersection)
+                }
+            } else if direction == 3 {
+                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[0] - 10, endingPos: intersection.getPosition()[0] + 100) {
+                    if closeCar.getLastTurn() == 2 && !closeCar.isLastTurnCompleted() {
+                        leftTurner(direction: direction, intersection: intersection)
+                    }
+                } else {
+                    leftTurner(direction: direction, intersection: intersection)
+                }
+            }
+        }
+    }
+    
+    func updateTurnArray() {
+        if (currentStreet.getDirection() == 0) {
+            for _ in 0...20 {
+                var number = Int.random(in: -1 ... 10)
+                if number <= 0 {
+                    number = 0
+                } else if number > 2 {
+                    number = 2
+                }
+                turnArray.append(number)
+                completedTurnsArray.append(number == 0)
+            }
+        } else {
+            for _ in 0...20 {
+                var number = Int.random(in: -3 ... 2)
+                if number <= 0 {
+                    number = 0
+                }
+                turnArray.append(number)
+                completedTurnsArray.append(number == 0)
+            }
+        }
+    }
+    
+    func getTurn(index: Int) -> Int {
+        return turnArray[index]
+    }
+    
+    func getLastTurn() -> Int {
+        if (intersectionArray.count == 0) {
+            return turnArray[0]
+        } else {
+            return turnArray[intersectionArray.count - 1]
+        }
+    }
+    
+    func isLastTurnCompleted() -> Bool {
+        if (intersectionArray.count == 0) {
+            return completedTurnsArray[0]
+        } else {
+            return completedTurnsArray[intersectionArray.count - 1]
+        }
+    }
+    
+    func addToIntersectionArray(intersection: Intersection) -> Bool {
+        // returns true if this is the first time the car has approached this intersection, false otherwise
+        var contains = false
+        for intersect in intersectionArray {
+            if intersect === intersection {
+                contains = true
+            }
+        }
+        if (!contains) {
+            intersectionArray.append(intersection)
+        }
+        return !contains
+    }
+    
+    func leftTurner(direction: Int, intersection: Intersection) {
+        currentStreet.removeCar(car: self)
+        if (direction == 0) {
+            currentStreet = intersection.getVerticalTwoWay().getDownStreet()
+        } else if (direction == 1) {
+            currentStreet = intersection.getVerticalTwoWay().getUpStreet()
+        } else if (direction == 2) {
+            currentStreet = intersection.getHorizontalTwoWay().getRightStreet()
+        } else if (direction == 3) {
+            currentStreet = intersection.getHorizontalTwoWay().getLeftStreet()
+        }
+        currentStreet.addCar(car: self)
+        fixPosOnStreet()
+        completedTurnsArray[intersectionArray.count - 1] = true
     }
 }

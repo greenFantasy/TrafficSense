@@ -121,6 +121,12 @@ class GameScene: SKScene {
         trafficLight.changeState()
     }
     
+    func moveCarForward(vehicle: Car) {
+        let vec = vehicle.directionToVector()
+        
+        vehicle.move(xVel: vec[0] * Int(vehicle.getTopSpeed() * speedModifier(distance: absoluteValue(calcXDistance(car1: vehicle, car2: vehicle.getClosestCar())))), yVel: vec[1] * Int(vehicle.getTopSpeed() * speedModifier(distance: absoluteValue(calcYDistance(car1: vehicle, car2: vehicle.getClosestCar())))))
+    }
+    
     func move() {
         var elementsToRemove:[Int] = []
         for i in 0...carArray.count-1 {
@@ -135,13 +141,17 @@ class GameScene: SKScene {
                 
                 if let intersection = isCarAtAnyIntersectionChecker(vehicle) {
                     
-                    vehicle.turn(streetToTurnOn: getStreetToTurnOn(car: vehicle, intersection: intersection), intersection: intersection)
+                    let added = vehicle.addToIntersectionArray(intersection: intersection)
+                    if (vehicle.getLastTurn() == 0 || vehicle.isLastTurnCompleted()) {
+                        moveCarForward(vehicle: vehicle)
+                    } else if vehicle.getLastTurn() == 1 {
+                        vehicle.makeRightTurn(intersection: intersection)
+                    } else if vehicle.getLastTurn() == 2 {
+                        vehicle.makeLeftTurn(intersection: intersection)
+                    }
+                } else {
+                    moveCarForward(vehicle: vehicle)
                 }
-                
-                let vec = vehicle.directionToVector()
-                
-                vehicle.move(xVel: vec[0] * Int(vehicle.getTopSpeed() * speedModifier(distance: absoluteValue(calcXDistance(car1: vehicle, car2: vehicle.getClosestCar())))), yVel: vec[1] * Int(vehicle.getTopSpeed() * speedModifier(distance: absoluteValue(calcYDistance(car1: vehicle, car2: vehicle.getClosestCar())))))
-                
             }
             if (vehicle.getXPos() <= Int(-self.scene!.size.width/2) && vehicle.getDirection() == 0) {
                 createCar(Int(self.scene!.size.width/2) + 100, vehicle.getYPos(), leftStreet: vehicle.getStreet())

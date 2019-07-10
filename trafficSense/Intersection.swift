@@ -101,4 +101,16 @@ class Intersection {
         return false
     }
     
+    func getOppositeStreet(street: StreetProtocol) -> StreetProtocol {
+        if street.getDirection() == 0 {
+            return horizontalTwoWay.getRightStreet()
+        } else if street.getDirection() == 1 {
+            return horizontalTwoWay.getLeftStreet()
+        } else if street.getDirection() == 2 {
+            return verticalTwoWay.getUpStreet()
+        } else {
+            return verticalTwoWay.getDownStreet()
+        }
+    }
+    
 }
