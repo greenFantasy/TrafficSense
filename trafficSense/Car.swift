@@ -23,10 +23,13 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     private var intersected = false
     private var turnArray:[Int] = [] // when 0, it's going to continue straight, when 1, the car will turn right, when 2, the car will turn left
     private var completedTurnsArray:[Bool] = []
+    private var carType: String = "car"
+    
     
     //private let finalDestination
     
     init (x: Int, y: Int, street: StreetProtocol, imageNamed: String) {
+        carType = imageNamed
         xPos = x
         yPos = y
         shapeNode.fillColor = SKColor.orange
@@ -34,11 +37,23 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         closestCar = nil
         super.init()
         shapeNode.strokeColor = UIColor.clear
-        shapeNode.fillTexture = SKTexture.init(image: UIImage(named: imageNamed)!)  // Covers the shape with the texture (image) of the correct car based on imageName pass through
+        shapeNode.fillTexture = SKTexture.init(image: UIImage(named: carType + String(currentStreet.getDirection()))!)  // Covers the shape with the texture (image) of the correct car based on imageName pass through
+        
         currentStreet.addCar(car: self)
         updateShapeNodePos()
         fixPosOnStreet()
         updateTurnArray()
+        
+        if (currentStreet.getDirection() >= 2){
+            
+            rotateNode()
+        }
+        
+        
+        
+            
+        
+        
     }
     
     func fixPosOnStreet() {
@@ -55,6 +70,18 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     
     func updateShapeNodePos() {
         shapeNode.position = getCGPoint()
+    }
+    
+    func rotateNode(){
+        
+        
+            //shapeNode.zRotation = .pi/2
+        shapeNode.run(SKAction.rotate(byAngle: .pi/2, duration: 1.0))
+            shapeNode.fillTexture = SKTexture.init(image: UIImage(named: carType + String(currentStreet.getDirection()))!)
+        
+        
+        
+        
     }
     
     func setNode(node: SKShapeNode) {
@@ -191,6 +218,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
             }
             currentStreet.addCar(car: self)
             fixPosOnStreet()
+            rotateNode()
             completedTurnsArray[intersectionArray.count - 1] = true
         }
     }
@@ -306,6 +334,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         }
         currentStreet.addCar(car: self)
         fixPosOnStreet()
+        rotateNode()
         completedTurnsArray[intersectionArray.count - 1] = true
     }
 }
