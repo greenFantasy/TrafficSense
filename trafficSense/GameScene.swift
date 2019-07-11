@@ -28,7 +28,9 @@ class GameScene: SKScene {
     private var twoWayHorizontalArray:[TwoWayHorizontal] = []
     private var twoWayVerticalArray:[TwoWayVertical] = []
     private var gameOverLabel = SKLabelNode(fontNamed: "Helvetica Neue UltraLight")
-    
+    private var hitCounter = 0
+    private var carsThrough = 0
+
     
     override func sceneDidLoad() {
         self.lastUpdateTime = 0
@@ -76,12 +78,12 @@ class GameScene: SKScene {
     */
     @objc func onTimerFires() {
         timeLeft -= 1
-        scoreLabel.text = "\(timeLeft) seconds left, score: " + String(score)
+        scoreLabel.text = "\(timeLeft) sec left  Score: " + String(carsThrough) + "  Cars Hit: " + String(hitCounter)
         
         if timeLeft <= 0 {
             timer?.invalidate()
             timer = nil
-            scoreLabel.text = "Game over! Score: " + String(score)
+            scoreLabel.text = "Game over!  Score: " + String(carsThrough) + "  Cars Hit: " + String(hitCounter)
         }
     }
     
@@ -141,7 +143,7 @@ class GameScene: SKScene {
                 
                 if let intersection = isCarAtAnyIntersectionChecker(vehicle) {
                     
-                    let added = vehicle.addToIntersectionArray(intersection: intersection)
+                    _ = vehicle.addToIntersectionArray(intersection: intersection)
                     if (vehicle.getLastTurn() == 0 || vehicle.isLastTurnCompleted()) {
                         moveCarForward(vehicle: vehicle)
                     } else if vehicle.getLastTurn() == 1 {
@@ -189,6 +191,7 @@ class GameScene: SKScene {
     func removeCar(_ vehicle: Car) {
         vehicle.getNode().removeFromParent()
         vehicle.getStreet().removeCar(car: vehicle)
+        carsThrough += 1
     }
     
     
@@ -351,11 +354,8 @@ class GameScene: SKScene {
                 for j in i+1...carArray.count-1 {
                     if (carArray[i].getNode().frame.intersects(carArray[j].getNode().frame) && (!carArray[i].getIntersected() || !carArray[j].getIntersected()) )
                     {
-                        carArray[i].changeIntersected()
-                        carArray[j].changeIntersected()
                         hitCars.append(carArray[j])
                         hitCars.append(carArray[i])
-                        gameOverScreen()
                     }
                     
                     
@@ -368,8 +368,16 @@ class GameScene: SKScene {
             
             for i in 0...hitCars.count-1 {
                 
-                if (i%2==0) {
-                    print("hit car")
+                if (i%2==1) {
+                    if (hitCars[i].getLastTurn() == 2 && hitCars[i-1].getLastTurn() == 2) {
+                        print("two left turning hit cars, no issue")
+                    } else {
+                        hitCounter += 1
+                        hitCars[i].changeIntersected()
+                        hitCars[i-1].changeIntersected()
+                        print("Car Hit #" + String(hitCounter))
+                        gameOverScreen()
+                    }
                 }
             
             }

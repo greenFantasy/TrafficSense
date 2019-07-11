@@ -112,7 +112,7 @@ class UpStreet:StreetProtocol {
             upper = startingPos
         }
         for vehicle in carArray {
-            if (lower < vehicle.getYPos() && upper > vehicle.getYPos()) {
+            if (lower < vehicle.getYPos() && upper > vehicle.getYPos() && vehicle.getLastTurn() != 2) {
                 if let car = closeCar {
                     if vehicle.getYPos() > car.getYPos() {
                         closeCar = vehicle

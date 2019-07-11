@@ -45,15 +45,8 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         updateTurnArray()
         
         if (currentStreet.getDirection() >= 2){
-            
-            rotateNode()
+            rotateNode(timeForAction: 0.0)
         }
-        
-        
-        
-            
-        
-        
     }
     
     func fixPosOnStreet() {
@@ -72,16 +65,14 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         shapeNode.position = getCGPoint()
     }
     
+    func rotateNode(timeForAction: TimeInterval){
+        shapeNode.run(SKAction.rotate(byAngle: .pi/2, duration: timeForAction))
+        shapeNode.fillTexture = SKTexture.init(image: UIImage(named: carType + String(currentStreet.getDirection()))!)
+    }
+    
     func rotateNode(){
-        
-        
-            //shapeNode.zRotation = .pi/2
         shapeNode.run(SKAction.rotate(byAngle: .pi/2, duration: 1.0))
-            shapeNode.fillTexture = SKTexture.init(image: UIImage(named: carType + String(currentStreet.getDirection()))!)
-        
-        
-        
-        
+        shapeNode.fillTexture = SKTexture.init(image: UIImage(named: carType + String(currentStreet.getDirection()))!)
     }
     
     func setNode(node: SKShapeNode) {
@@ -89,10 +80,10 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     }
     
     func move(xVel:Int, yVel:Int) {
-        //if (!intersected) {
-        xPos += xVel
-        yPos += yVel
-        //}
+        if (!intersected) {
+            xPos += xVel
+            yPos += yVel
+        }
         updateShapeNodePos()
     }
     
@@ -228,7 +219,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
             let oppStreet = intersection.getOppositeStreet(street: currentStreet)
             let direction = currentStreet.getDirection()
             if direction == 0 {
-                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[0] + 10, endingPos: intersection.getPosition()[0] - 100) {
+                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[0] + 10, endingPos: intersection.getPosition()[0] - 200) {
                     if closeCar.getLastTurn() == 2 && !closeCar.isLastTurnCompleted() {
                         leftTurner(direction: direction, intersection: intersection)
                     }
@@ -236,7 +227,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
                     leftTurner(direction: direction, intersection: intersection)
                 }
             } else if (direction == 1) {
-                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[0] - 10, endingPos: intersection.getPosition()[0] + 100) {
+                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[0] - 10, endingPos: intersection.getPosition()[0] + 200) {
                     if closeCar.getLastTurn() == 2 && !closeCar.isLastTurnCompleted() {
                         leftTurner(direction: direction, intersection: intersection)
                     }
@@ -244,7 +235,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
                     leftTurner(direction: direction, intersection: intersection)
                 }
             } else if direction == 2 {
-                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[0] + 10, endingPos: intersection.getPosition()[0] - 100) {
+                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[1] + 10, endingPos: intersection.getPosition()[1] - 200) {
                     if closeCar.getLastTurn() == 2 && !closeCar.isLastTurnCompleted() {
                         leftTurner(direction: direction, intersection: intersection)
                     }
@@ -252,7 +243,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
                     leftTurner(direction: direction, intersection: intersection)
                 }
             } else if direction == 3 {
-                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[0] - 10, endingPos: intersection.getPosition()[0] + 100) {
+                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[1] - 10, endingPos: intersection.getPosition()[1] + 200) {
                     if closeCar.getLastTurn() == 2 && !closeCar.isLastTurnCompleted() {
                         leftTurner(direction: direction, intersection: intersection)
                     }

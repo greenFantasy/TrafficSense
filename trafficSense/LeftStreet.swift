@@ -117,7 +117,7 @@ class LeftStreet:StreetProtocol {
             upper = startingPos
         }
         for vehicle in carArray {
-            if (lower < vehicle.getXPos() && upper > vehicle.getXPos()) {
+            if (lower < vehicle.getXPos() && upper > vehicle.getXPos() && vehicle.getLastTurn() != 2) {
                 if let car = closeCar {
                     if vehicle.getXPos() < car.getXPos() {
                         closeCar = vehicle
