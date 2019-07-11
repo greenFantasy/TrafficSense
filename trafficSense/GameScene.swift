@@ -27,10 +27,9 @@ class GameScene: SKScene {
     private var streetArray:[StreetProtocol] = []
     private var twoWayHorizontalArray:[TwoWayHorizontal] = []
     private var twoWayVerticalArray:[TwoWayVertical] = []
-    private var gameOverLabel = SKLabelNode(fontNamed: "Helvetica Neue UltraLight")
+    private var gameOverLabel = SKLabelNode(fontNamed: "Helvetica Neue-Bold")
     private var hitCounter = 0
     private var carsThrough = 0
-
     
     override func sceneDidLoad() {
         self.lastUpdateTime = 0
@@ -216,15 +215,15 @@ class GameScene: SKScene {
         }
     }
     
-    func calcNewOffset(spacing base: Double) -> Double {
-        var newOffset = base
-        for vehicle in carArray {
-            let boundingBox = vehicle.getNode().path!.boundingBox
-            let vehicleWidth = boundingBox.size.width
-            newOffset = newOffset + Double(vehicleWidth) + base
-        }
-        return newOffset
-    }
+//    func calcNewOffset(spacing base: Double) -> Double {
+//        var newOffset = base
+//        for vehicle in carArray {
+//            let boundingBox = vehicle.getNode().path!.boundingBox
+//            let vehicleWidth = boundingBox.size.width
+//            newOffset = newOffset + Double(vehicleWidth) + base
+//        }
+//        return newOffset
+//    }
     
     func calcXDistance(car1: Car?, car2: Car?) -> Int {
 //        let boundingBox1 = car1.getNode().path!.boundingBox
@@ -387,9 +386,12 @@ class GameScene: SKScene {
     }
     
     func gameOverScreen() {
-        
+
         gameOverLabel.isHidden = false
         gameOverLabel.text = "Game Over!"
+        gameOverLabel.fontSize = 100
+        gameOverLabel.fontColor = UIColor.red
+        
     }
     
     

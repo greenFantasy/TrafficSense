@@ -13,7 +13,7 @@ import UIKit
 
 class Car: SKShapeNode {  // Car implements SKShapeNode class
     
-    private var shapeNode = SKShapeNode(rectOf: CGSize(width: 60, height: 40))
+    private var shapeNode:SKSpriteNode
     private let topSpeed:Double = 5.0
     private var xPos:Int
     private var yPos:Int
@@ -32,12 +32,11 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         carType = imageNamed
         xPos = x
         yPos = y
-        shapeNode.fillColor = SKColor.orange
         currentStreet = street
+        shapeNode = SKSpriteNode(imageNamed: carType + String(currentStreet.getDirection()))
+        
         closestCar = nil
         super.init()
-        shapeNode.strokeColor = UIColor.clear
-        shapeNode.fillTexture = SKTexture.init(image: UIImage(named: carType + String(currentStreet.getDirection()))!)  // Covers the shape with the texture (image) of the correct car based on imageName pass through
         
         currentStreet.addCar(car: self)
         updateShapeNodePos()
@@ -45,7 +44,9 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         updateTurnArray()
         
         if (currentStreet.getDirection() >= 2){
-            rotateNode(timeForAction: 0.0)
+            shapeNode.size = CGSize(width: 40.0, height: 60.0)
+        } else {
+            shapeNode.size = CGSize(width: 60.0, height: 40.0)
         }
     }
     
@@ -65,17 +66,15 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         shapeNode.position = getCGPoint()
     }
     
-    func rotateNode(timeForAction: TimeInterval){
-        shapeNode.run(SKAction.rotate(byAngle: .pi/2, duration: timeForAction))
-        shapeNode.fillTexture = SKTexture.init(image: UIImage(named: carType + String(currentStreet.getDirection()))!)
+    func rotateNodeLeft(){
+        shapeNode.run(SKAction.rotate(byAngle: .pi/2, duration: 0.4))
     }
     
-    func rotateNode(){
-        shapeNode.run(SKAction.rotate(byAngle: .pi/2, duration: 1.0))
-        shapeNode.fillTexture = SKTexture.init(image: UIImage(named: carType + String(currentStreet.getDirection()))!)
+    func rotateNodeRight(){
+        shapeNode.run(SKAction.rotate(byAngle: -.pi/2, duration: 0.4))
     }
     
-    func setNode(node: SKShapeNode) {
+    func setNode(node: SKSpriteNode) {
         shapeNode = node
     }
     
@@ -117,7 +116,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         }
     }
     
-    func getNode() -> SKShapeNode
+    func getNode() -> SKSpriteNode
     {
         return shapeNode
     }
@@ -209,17 +208,19 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
             }
             currentStreet.addCar(car: self)
             fixPosOnStreet()
-            rotateNode()
+            rotateNodeRight()
             completedTurnsArray[intersectionArray.count - 1] = true
         }
     }
     
     func makeLeftTurn(intersection: Intersection) {
+        let frontTurnMargin = 15
+        let backTurnMargin = 200
         if !isLastTurnCompleted() {
             let oppStreet = intersection.getOppositeStreet(street: currentStreet)
             let direction = currentStreet.getDirection()
             if direction == 0 {
-                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[0] + 10, endingPos: intersection.getPosition()[0] - 200) {
+                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[0] + frontTurnMargin, endingPos: intersection.getPosition()[0] - backTurnMargin) {
                     if closeCar.getLastTurn() == 2 && !closeCar.isLastTurnCompleted() {
                         leftTurner(direction: direction, intersection: intersection)
                     }
@@ -227,7 +228,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
                     leftTurner(direction: direction, intersection: intersection)
                 }
             } else if (direction == 1) {
-                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[0] - 10, endingPos: intersection.getPosition()[0] + 200) {
+                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[0] - frontTurnMargin, endingPos: intersection.getPosition()[0] + backTurnMargin) {
                     if closeCar.getLastTurn() == 2 && !closeCar.isLastTurnCompleted() {
                         leftTurner(direction: direction, intersection: intersection)
                     }
@@ -235,7 +236,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
                     leftTurner(direction: direction, intersection: intersection)
                 }
             } else if direction == 2 {
-                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[1] + 10, endingPos: intersection.getPosition()[1] - 200) {
+                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[1] + frontTurnMargin, endingPos: intersection.getPosition()[1] - backTurnMargin) {
                     if closeCar.getLastTurn() == 2 && !closeCar.isLastTurnCompleted() {
                         leftTurner(direction: direction, intersection: intersection)
                     }
@@ -243,7 +244,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
                     leftTurner(direction: direction, intersection: intersection)
                 }
             } else if direction == 3 {
-                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[1] - 10, endingPos: intersection.getPosition()[1] + 200) {
+                if let closeCar = oppStreet.isStreetFree(startingPos: intersection.getPosition()[1] - frontTurnMargin, endingPos: intersection.getPosition()[1] + backTurnMargin) {
                     if closeCar.getLastTurn() == 2 && !closeCar.isLastTurnCompleted() {
                         leftTurner(direction: direction, intersection: intersection)
                     }
@@ -325,7 +326,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         }
         currentStreet.addCar(car: self)
         fixPosOnStreet()
-        rotateNode()
+        rotateNodeLeft()
         completedTurnsArray[intersectionArray.count - 1] = true
     }
 }
