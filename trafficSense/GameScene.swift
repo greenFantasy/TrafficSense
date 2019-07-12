@@ -13,7 +13,7 @@ class GameScene: SKScene {
     
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
-    
+    private var endView:UIView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
     private var lastUpdateTime : TimeInterval = 0
     private var spinnyNode : SKShapeNode?
     private var light : TrafficLight?
@@ -27,25 +27,36 @@ class GameScene: SKScene {
     private var streetArray:[StreetProtocol] = []
     private var twoWayHorizontalArray:[TwoWayHorizontal] = []
     private var twoWayVerticalArray:[TwoWayVertical] = []
-    private var gameOverLabel = SKLabelNode(fontNamed: "Helvetica Neue-Bold")
+    private var gameOverLabel: SKLabelNode = SKLabelNode(text: "Game Over!")
     private var hitCounter = 0
     private var carsThrough = 0
     
+    
     override func sceneDidLoad() {
         self.lastUpdateTime = 0
-   
+//        let endView = SKView(frame: self.frame)
+//        self.addChild(endView)
+        
         /*  This next block of code sets a few properties for the score label which will also include time left in the game. Currently its position is set relative to the screen size so that multiple devices can be supported.
         */
         
-        self.addChild(gameOverLabel)
+        //endView.addSubview(gameOverLabel)
         gameOverLabel.isHidden = true
-
+        
         scoreLabel.text = ""
         scoreLabel.fontSize = 65
         scoreLabel.fontColor = SKColor.white
         scoreLabel.position = CGPoint(x: frame.midX, y: frame.maxY * 3/4)
         
         self.addChild(scoreLabel)  // Adds the scoreLabel to the scene
+        
+//        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+//        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+//        blurEffectView.frame = gameViewSK.bounds
+//        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        gameViewSK.addSubview(blurEffectView)
+//        blurEffectView.isHidden=true;
+//
         
         let firstTwoWay = TwoWayHorizontal(midline: 100)
         twoWayHorizontalArray.append(firstTwoWay)
@@ -121,6 +132,15 @@ class GameScene: SKScene {
     func switchLight(trafficLight:TrafficLight) {
         trafficLight.changeState()
     }
+    
+    
+    func setView(endView: UIView){
+        self.endView = endView
+        
+        
+        
+    }
+    
     
     func moveCarForward(vehicle: Car) {
         let vec = vehicle.directionToVector()
@@ -387,11 +407,8 @@ class GameScene: SKScene {
     
     func gameOverScreen() {
 
-        gameOverLabel.isHidden = false
-        gameOverLabel.text = "Game Over!"
-        gameOverLabel.fontSize = 100
-        gameOverLabel.fontColor = UIColor.red
         
+        endView.isHidden = false
     }
     
     

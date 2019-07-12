@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -75,6 +74,7 @@
                         <outlet property="gameOverLabel" destination="FXw-Ww-SQK" id="xAC-yP-vcq"/>
                         <outlet property="gameView" destination="upZ-VW-H4F" id="Sn9-3e-jYY"/>
                         <outlet property="gameViewSK" destination="EwG-63-zVp" id="0Hc-Db-7Tz"/>
+                        <outlet property="viewScreen" destination="upZ-VW-H4F" id="5QG-rF-23S"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYN-ds-Ju6" userLabel="First Responder" sceneMemberID="firstResponder"/>

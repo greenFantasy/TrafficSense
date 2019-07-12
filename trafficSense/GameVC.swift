@@ -17,6 +17,7 @@ class GameVC: UIViewController {
     
     @IBOutlet weak var gameViewSK: SKView!
     
+    @IBOutlet var viewScreen: UIView!
     @IBOutlet weak var gameOverLabel: UILabel!
     
     override func viewDidLoad() {
@@ -40,7 +41,7 @@ class GameVC: UIViewController {
                 sceneNode.scaleMode = .aspectFill
                 
                 if let view = self.gameViewSK {
-                    
+                    editGameOverScreen(scene: sceneNode)
                     view.presentScene(sceneNode)
                     
                     view.ignoresSiblingOrder = true
@@ -55,6 +56,28 @@ class GameVC: UIViewController {
         
         
     }
+    
+    func editGameOverScreen(scene: GameScene){
+        let gameOverLabel = UILabel(frame: CGRect(x: scene.size.width/4, y: scene.size.height/4, width: 1000, height: 50))
+        print(scene.size.width/2)
+        print(scene.size.height/2)
+        let endView = UIView(frame: view.frame)
+        endView.addSubview(gameOverLabel)
+        gameOverLabel.isHidden = false
+        gameOverLabel.text = "Game Over!"
+        gameOverLabel.font = UIFont(name: "Times New Roman", size: 70)
+        
+        gameOverLabel.textColor = UIColor.red
+        scene.setView(endView: endView)
+        viewScreen.addSubview(endView)
+        endView.isHidden = true
+        endView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.6)
+        
+        
+        
+        
+    }
+    
     
     override var shouldAutorotate: Bool {
         return true
