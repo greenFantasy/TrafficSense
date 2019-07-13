@@ -13,6 +13,9 @@ class GameScene: SKScene {
     
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
+    private var restartButton = SKSpriteNode()
+    private var pauseButton = SKSpriteNode(imageNamed: "pauseButton")
+    private var unpauseButton = SKSpriteNode(imageNamed: "unPauseButton")
     private var endView:UIView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
     private var lastUpdateTime : TimeInterval = 0
     private var spinnyNode : SKShapeNode?
@@ -32,6 +35,7 @@ class GameScene: SKScene {
     private var carsThrough = 0
     
     
+    
     override func sceneDidLoad() {
         self.lastUpdateTime = 0
         
@@ -39,6 +43,7 @@ class GameScene: SKScene {
         */
         
         gameOverLabel.isHidden = true
+        createPauseButton()
         
         scoreLabel.text = ""
         scoreLabel.fontSize = 65
@@ -118,12 +123,65 @@ class GameScene: SKScene {
                 
             }
             
+            if pauseButton.contains(pointOfTouch) {
+                
+                createunPauseButton()
+                
+                pauseButton.removeFromParent()
+                pauseGame()
+            }
+            
+            if unpauseButton.contains(pointOfTouch) {
+                //scene?.view?.isPaused = false
+                createPauseButton()
+            }
+            
         }
 
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
     //    for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+    }
+    
+    
+    func createPauseButton()
+    {
+        
+        pauseButton = SKSpriteNode(imageNamed: "pauseButton")
+        //pauseButton.color = SKColor.blue
+        pauseButton.size = CGSize(width: 75, height: 75)
+        pauseButton.position = CGPoint(x: 500, y: 300)
+        
+        //pauseButton.zPosition = 10
+        self.addChild(pauseButton)
+        
+        
+    }
+    
+    func createunPauseButton(){
+    
+        
+            unpauseButton = SKSpriteNode(imageNamed: "unPauseButton")
+            unpauseButton.position = CGPoint(x: 500, y: 300)
+            unpauseButton.size = CGSize(width: 75, height: 75)
+            self.addChild(unpauseButton)
+            //pauseGame()
+            //scene?.view?.isPaused = true
+        
+    
+    }
+    
+    
+    func pauseGame() {
+        
+        createunPauseButton()
+    }
+    
+    func unPauseGame() {
+        
+        
+        
     }
     
     func switchLight(trafficLight:TrafficLight) {
@@ -311,7 +369,7 @@ class GameScene: SKScene {
             car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "car") // If 1, a Car instance will be created with the image being that of a car
         }
         else {
-            car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "Green Pickup") // If 2, a Car instance will be created with the image being that of a pickup truck
+            car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "yellow car") // If 2, a Car instance will be created with the image being that of a pickup truck
         }
         
         self.addChild(car!.getNode())
