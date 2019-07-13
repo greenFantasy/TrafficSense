@@ -18,7 +18,6 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         
-        
         super.viewDidLoad()
         super.view.backgroundColor = UIColor.white
         

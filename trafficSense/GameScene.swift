@@ -362,26 +362,34 @@ class GameScene: SKScene {
     
     func createCar(_ xPos:Int, _ yPos:Int, leftStreet: StreetProtocol) {
         // let number = Int.random(in: -700 ... 300)
-        let streetCarArray = leftStreet.getCars()
-        let number = Int.random(in: 1 ... 2)  // This code generates a random number 1 or 2 to replicate 50% probability for any event
-        var car : Car?
-        if (number == 1) {
-            car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "car") // If 1, a Car instance will be created with the image being that of a car
+        var create = true
+        for vehicle in carArray {
+            if (absoluteValue(xPos, vehicle.getXPos()) < 60 && absoluteValue(yPos, vehicle.getYPos()) < 60) {
+                create = false
+            }
         }
-        else {
-            car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "yellow car") // If 2, a Car instance will be created with the image being that of a pickup truck
-        }
-        
-        self.addChild(car!.getNode())
-        carArray.append(car!)
-        for vehicle in streetCarArray {
-            if let car2 = car!.getClosestCar() {
-                if (leftStreet.getDirection() == 0 && car2.getXPos() < vehicle.getXPos() && car!.getXPos() > vehicle.getXPos()) {
-                    vehicle.setClosestCar(car: vehicle)
-                }
-                if (leftStreet.getDirection() == 1 && car2.getXPos() > vehicle.getXPos() && car!.getXPos() < vehicle.getXPos()) {
-                    
-                    vehicle.setClosestCar(car: vehicle)
+        if (create) {
+            let streetCarArray = leftStreet.getCars()
+            let number = Int.random(in: 1 ... 2)  // This code generates a random number 1 or 2 to replicate 50% probability for any event
+            var car : Car?
+            if (number == 1) {
+                car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "car") // If 1, a Car instance will be created with the image being that of a car
+            }
+            else {
+                car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "Green Pickup") // If 2, a Car instance will be created with the image being that of a pickup truck
+            }
+            
+            self.addChild(car!.getNode())
+            carArray.append(car!)
+            for vehicle in streetCarArray {
+                if let car2 = car!.getClosestCar() {
+                    if (leftStreet.getDirection() == 0 && car2.getXPos() < vehicle.getXPos() && car!.getXPos() > vehicle.getXPos()) {
+                        vehicle.setClosestCar(car: vehicle)
+                    }
+                    if (leftStreet.getDirection() == 1 && car2.getXPos() > vehicle.getXPos() && car!.getXPos() < vehicle.getXPos()) {
+                        
+                        vehicle.setClosestCar(car: vehicle)
+                    }
                 }
             }
         }
