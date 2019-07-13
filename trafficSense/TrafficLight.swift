@@ -11,7 +11,7 @@ import SpriteKit
 import UIKit
 
 class TrafficLight {
-    
+    private var lightSwitched = false
     private var xPos:Int
     private var yPos:Int
     private var shapeNode = SKShapeNode(circleOfRadius: 30)
@@ -19,6 +19,8 @@ class TrafficLight {
     private var street:StreetProtocol
     private var radius = 30
     private var intersection:Intersection?
+    private var timer:Timer?  // Creates optional of type Timer
+    private var timeLeft = 3  //Variable used in timer for setting amount of time left
     
     init (x:Int, y:Int, location: StreetProtocol) {
         xPos = x
@@ -75,12 +77,37 @@ class TrafficLight {
     
     func changeState () {
         // changes between green (1) and red (-1), eventually yellow will be 0
-        if (state > -1) {
-            state -= 2
-        } else if (state == -1) {
+        if state == -1 {
             state = 1
+            updateLight()
         }
-        updateLight()
+        else if state == 1 {
+            state = 0
+            updateLight()
+            timeLeft = 3
+            timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
+            
+            /*  The timer above is now initialized using a few key properties: the timeInterval is the interval in which the timer will update, target is where the timer will be applied, selector specifies a function to run when the timer updates based on the time interval, userInfo can supply information to the selector function, and repeats allows the timer to run continuously until invalidated.
+            */
+        }
+//        if (state > -1) {
+//            state -= 2
+//        } else if (state == -1) {
+//            state = 1
+//        }
+    }
+    
+    /*  The function below is visible in objective-c since the selector is an obj-c concept. The timeLeft variable is deprecated by 1 referencing one second passing. The label is updated, and once the timeLeft variable reaches 0, the timer is invalidated and the label is updated to reflect the game being over.
+     */
+    @objc func onTimerFires() {
+        timeLeft -= 1
+        
+        if timeLeft <= 0 {
+            timer?.invalidate()
+            timer = nil
+            state = -1
+            updateLight()
+        }
     }
     
     func getColor() -> SKColor {
