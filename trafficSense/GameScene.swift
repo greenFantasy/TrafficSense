@@ -30,7 +30,7 @@ class GameScene: SKScene {
     private var streetArray:[StreetProtocol] = []
     private var twoWayHorizontalArray:[TwoWayHorizontal] = []
     private var twoWayVerticalArray:[TwoWayVertical] = []
-    private var gameOverLabel: SKLabelNode = SKLabelNode(text: "Game Over!")
+    private var gameOverLabel = SKLabelNode(fontNamed: "Helvetica Neue UltraLight")
     private var hitCounter = 0
     private var carsThrough = 0
     
@@ -38,13 +38,10 @@ class GameScene: SKScene {
     
     override func sceneDidLoad() {
         self.lastUpdateTime = 0
-//        let endView = SKView(frame: self.frame)
-//        self.addChild(endView)
         
         /*  This next block of code sets a few properties for the score label which will also include time left in the game. Currently its position is set relative to the screen size so that multiple devices can be supported.
         */
         
-        //endView.addSubview(gameOverLabel)
         gameOverLabel.isHidden = true
         createPauseButton()
         
@@ -98,7 +95,7 @@ class GameScene: SKScene {
         if timeLeft <= 0 {
             timer?.invalidate()
             timer = nil
-            scoreLabel.text = "Game over!  Score: " + String(carsThrough) + "  Cars Hit: " + String(hitCounter)
+            gameOverScreen()
         }
     }
     
@@ -194,9 +191,6 @@ class GameScene: SKScene {
     
     func setView(endView: UIView){
         self.endView = endView
-        
-        
-        
     }
     
     
@@ -464,11 +458,30 @@ class GameScene: SKScene {
     }
     
     func gameOverScreen() {
-
-        
+        timer?.invalidate()
+        timer = nil
+ 
+        gameOverLabel.position = CGPoint(x: frame.midX, y: frame.midY)
+        let labels = getLabelsInView(view: endView)
+        print("foo")
+        for label in labels {
+            label.text = "Game over!  Score: " + String(carsThrough)
+            label.frame.origin = CGPoint(x: frame.midX, y: frame.midY)
+        }
         endView.isHidden = false
     }
     
+    func getLabelsInView(view: UIView) -> [UILabel] {
+        var results = [UILabel]()
+        for subview in view.subviews as [UIView] {
+            if let labelView = subview as? UILabel {
+                results += [labelView]
+            } else {
+                results += getLabelsInView(view: subview)
+            }
+        }
+        return results
+    }
     
     func getStreetToTurnOn (car: Car, intersection: Intersection) -> StreetProtocol {
         let number = Int.random(in: 0 ... 1)
