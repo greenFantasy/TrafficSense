@@ -35,8 +35,8 @@ class Intersection {
         horizontalTwoWay = horizontal
         verticalTwoWay = vertical
         lightLeft = TrafficLight(x: xCenter - width/2 - lightDistance, y: yCenter + height/2 + lightDistance, location:  horizontalTwoWay.getLeftStreet())
-        lightRight = TrafficLight(x: xCenter + width/2 + lightDistance, y: yCenter - height/2 - lightDistance, location: horizontalTwoWay.getRightStreet())
         lightDown = TrafficLight(x: xCenter - width/2 - lightDistance, y: yCenter - height/2 - lightDistance, location: verticalTwoWay.getDownStreet())
+        lightRight = TrafficLight(x: xCenter + width/2 + lightDistance, y: yCenter - height/2 - lightDistance, location: horizontalTwoWay.getRightStreet())
         lightUp = TrafficLight(x: xCenter + width/2 + lightDistance, y: yCenter + height/2 + lightDistance, location: verticalTwoWay.getUpStreet())
         allFourLights.append(lightLeft)
         allFourLights.append(lightRight)

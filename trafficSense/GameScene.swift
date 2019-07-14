@@ -119,6 +119,12 @@ class GameScene: SKScene {
                 if let index = Int(x) {
                     //make it do whatever you want
                     switchLight(trafficLight: lightArray[index - 1])
+                    if (index % 2 == 1) {
+                        switchLight(trafficLight: lightArray[index])
+                    } else {
+                        switchLight(trafficLight: lightArray[index - 2])
+                    }
+                    
                 }
                 
             }
