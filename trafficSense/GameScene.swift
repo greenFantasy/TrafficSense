@@ -23,14 +23,14 @@ class GameScene: SKScene {
     private var carArray:[Car] = []
     private var lightArray:[TrafficLight] = []
     private var intersectionArray:[Intersection] = []
-    private var scoreLabel = SKLabelNode(fontNamed: "Helvetica Neue UltraLight")
+    private var scoreLabel = SKLabelNode(fontNamed: "Helvetica Neue")
     private var score = 0  // Score variable
     private var timer:Timer?  // Creates optional of type Timer
     private var timeLeft = 60  //Variable used in timer for setting amount of time left
     private var streetArray:[StreetProtocol] = []
     private var twoWayHorizontalArray:[TwoWayHorizontal] = []
     private var twoWayVerticalArray:[TwoWayVertical] = []
-    private var gameOverLabel = SKLabelNode(fontNamed: "Helvetica Neue UltraLight")
+    private var gameOverLabel = SKLabelNode(fontNamed: "Helvetica Neue")
     private var hitCounter = 0
     private var carsThrough = 0
     
@@ -43,11 +43,13 @@ class GameScene: SKScene {
         */
         
         gameOverLabel.isHidden = true
+        
         createPauseButton()
         
         scoreLabel.text = ""
         scoreLabel.fontSize = 65
-        scoreLabel.fontColor = SKColor.white
+        scoreLabel.zPosition = 150
+        scoreLabel.fontColor = SKColor.blue
         scoreLabel.position = CGPoint(x: frame.midX, y: frame.maxY * 3/4)
         
         self.addChild(scoreLabel)  // Adds the scoreLabel to the scene
@@ -508,11 +510,14 @@ class GameScene: SKScene {
         timer = nil
  
         gameOverLabel.position = CGPoint(x: frame.midX, y: frame.midY)
+        gameOverLabel.zPosition = 150
+        
         let labels = getLabelsInView(view: endView)
         print("foo")
         for label in labels {
             label.text = "Game over!  Score: " + String(carsThrough)
             label.frame.origin = CGPoint(x: frame.midX, y: frame.midY)
+            
         }
         endView.isHidden = false
     }
