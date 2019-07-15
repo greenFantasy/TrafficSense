@@ -383,7 +383,7 @@ class GameScene: SKScene {
                 car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "car") // If 1, a Car instance will be created with the image being that of a car
             }
             else {
-                car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "Green Pickup") // If 2, a Car instance will be created with the image being that of a pickup truck
+                car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "yellow car") // If 2, a Car instance will be created with the image being that of a pickup truck
             }
             
             self.addChild(car!.getNode())
