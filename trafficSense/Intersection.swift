@@ -113,4 +113,12 @@ class Intersection {
         }
     }
     
+    func getXFrame() -> [Int] {
+        return [xCenter - width/2, xCenter + width/2]
+    }
+    
+    func getYFrame() -> [Int] {
+        return [yCenter - height/2, yCenter + height/2]
+    }
+    
 }

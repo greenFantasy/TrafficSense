@@ -17,6 +17,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     private let topSpeed:Double = 5.0
     private var xPos:Int
     private var yPos:Int
+    private var previousStreet:StreetProtocol
     private var currentStreet:StreetProtocol
     private var closestCar: Car?
     private var intersectionArray:[Intersection] = [] // contains all intersections a car has turned at, a car cannot turn at the same intersection twice
@@ -24,6 +25,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     private var turnArray:[Int] = [] // when 0, it's going to continue straight, when 1, the car will turn right, when 2, the car will turn left
     private var completedTurnsArray:[Bool] = []
     private var carType: String = "car"
+    private var currentIntersection: Intersection?
     
     
     //private let finalDestination
@@ -37,6 +39,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         shapeNode.zPosition = 100
         
         closestCar = nil
+        previousStreet = currentStreet
         super.init()
         
         currentStreet.addCar(car: self)
@@ -80,11 +83,20 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     }
     
     func move(xVel:Int, yVel:Int) {
+        if let intersection = currentIntersection {
+            if !(currentStreet.getDirection() == previousStreet.getDirection()) {
+                if !isAtIntersection2(intersection: intersection) {
+                    previousStreet.removeCar(car: self)
+                    previousStreet = currentStreet
+                    currentIntersection = nil
+                }
+            }
+        }
         if (!intersected) {
             xPos += xVel
             yPos += yVel
         } else {
-            let number = Int.random(in: 0 ... 10)
+            let number = Int.random(in: 0 ... 30)
             if (number == 10) {
                 rotateNodeLeft()
             }
@@ -178,30 +190,35 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         intersected = true
     }
     
-    func isAtIntersection (intersection: Intersection) -> Bool {
-        return intersection.isCarAtIntersection(self)
-    }
+//    func isAtIntersection (intersection: Intersection) -> Bool {
+//        if (intersection.isCarAtIntersection(self)) {
+//            currentIntersection = intersection
+//            return true
+//        } else {
+//            return false
+//        }
+//    }
     
-    func turn(streetToTurnOn: StreetProtocol, intersection: Intersection) {
-        let number = Int.random(in: 0 ... 2)
-        var used = false
-        for usedIntersection in intersectionArray {
-            if (usedIntersection === intersection) {
-                used = true
-            }
-        }
-        if (number == 0 && !used) {
-            currentStreet.removeCar(car: self)
-            currentStreet = streetToTurnOn
-            streetToTurnOn.addCar(car: self)
-            intersectionArray.append(intersection)
-            fixPosOnStreet()
-        }
-    }
+//    func turn(streetToTurnOn: StreetProtocol, intersection: Intersection) {
+//        let number = Int.random(in: 0 ... 2)
+//        var used = false
+//        for usedIntersection in intersectionArray {
+//            if (usedIntersection === intersection) {
+//                used = true
+//            }
+//        }
+//        if (number == 0 && !used) {
+//            currentStreet.removeCar(car: self)
+//            currentStreet = streetToTurnOn
+//            streetToTurnOn.addCar(car: self)
+//            intersectionArray.append(intersection)
+//            fixPosOnStreet()
+//        }
+//    }
     
     func makeRightTurn(intersection: Intersection) {
         if completedTurnsArray[intersectionArray.count - 1] == false {
-            currentStreet.removeCar(car: self)
+            //currentStreet.removeCar(car: self)
             let direction = currentStreet.getDirection()
             if direction == 0 {
                 currentStreet = intersection.getVerticalTwoWay().getUpStreet()
@@ -220,7 +237,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     }
     
     func makeLeftTurn(intersection: Intersection) {
-        let frontTurnMargin = 15
+        let frontTurnMargin = 20
         let backTurnMargin = 200
         if !isLastTurnCompleted() {
             let oppStreet = intersection.getOppositeStreet(street: currentStreet)
@@ -314,13 +331,14 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
             }
         }
         if (!contains) {
+            currentIntersection = intersection
             intersectionArray.append(intersection)
         }
         return !contains
     }
     
     func leftTurner(direction: Int, intersection: Intersection) {
-        currentStreet.removeCar(car: self)
+        //currentStreet.removeCar(car: self)
         if (direction == 0) {
             currentStreet = intersection.getVerticalTwoWay().getDownStreet()
         } else if (direction == 1) {
@@ -334,5 +352,14 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         fixPosOnStreet()
         rotateNodeLeft()
         completedTurnsArray[intersectionArray.count - 1] = true
+    }
+    
+    func isAtIntersection2(intersection: Intersection) -> Bool {
+        if (intersection.getXFrame()[0] < getXPos() && getXPos() < intersection.getXFrame()[1]) {
+            if (intersection.getYFrame()[0] < getYPos() && getYPos() < intersection.getYFrame()[1]) {
+                return true
+            }
+        }
+        return false
     }
 }
