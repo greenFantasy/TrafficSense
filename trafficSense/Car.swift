@@ -36,14 +36,15 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         yPos = y
         currentStreet = street
         shapeNode = SKSpriteNode(imageNamed: carType + String(currentStreet.getDirection()))
+        shapeNode.zPosition = 100
         
         closestCar = nil
         previousStreet = currentStreet
         super.init()
         
         currentStreet.addCar(car: self)
-        updateShapeNodePos()
         fixPosOnStreet()
+        updateShapeNodePos()
         updateTurnArray()
         
         if (currentStreet.getDirection() >= 2){

@@ -56,6 +56,7 @@ class TrafficLight {
     func updateShapeNode() {
         shapeNode.position = getCGPoint()
         shapeNode.fillColor = getColor()
+        shapeNode.zPosition = 50
     }
     
     func updateLight() {
