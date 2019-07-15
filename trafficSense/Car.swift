@@ -82,6 +82,11 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         if (!intersected) {
             xPos += xVel
             yPos += yVel
+        } else {
+            let number = Int.random(in: 0 ... 10)
+            if (number == 10) {
+                rotateNodeLeft()
+            }
         }
         updateShapeNodePos()
     }
