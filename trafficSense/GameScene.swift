@@ -119,6 +119,12 @@ class GameScene: SKScene {
                 if let index = Int(x) {
                     //make it do whatever you want
                     switchLight(trafficLight: lightArray[index - 1])
+                    if (index % 2 == 1) {
+                        switchLight(trafficLight: lightArray[index])
+                    } else {
+                        switchLight(trafficLight: lightArray[index - 2])
+                    }
+                    
                 }
                 
             }
@@ -231,7 +237,8 @@ class GameScene: SKScene {
                 elementsToRemove.append(i)
                 removeCar(vehicle)
                 if (carArray.count < 25) {
-                    //createCar(600, 0, street: firstStreet)
+                    createCar(Int(self.scene!.size.width/2) + 200, vehicle.getYPos(), leftStreet: vehicle.getStreet())
+                    createCar(Int(self.scene!.size.width/2) + 300, vehicle.getYPos(), leftStreet: vehicle.getStreet())
                 }
             }
             else if (vehicle.getYPos() <= Int(-self.scene!.size.height/2) && vehicle.getDirection() == 2) {
@@ -239,7 +246,7 @@ class GameScene: SKScene {
                 elementsToRemove.append(i)
                 removeCar(vehicle)
                 if (carArray.count < 25) {
-                    createCar(vehicle.getXPos(), 1000, leftStreet: vehicle.getStreet())
+                    //createCar(-vehicle.getXPos(), 1000, leftStreet: vehicle.getStreet())
                 }
             }
             else if (vehicle.getYPos() >= Int(self.scene!.size.height/2) && vehicle.getDirection() == 3) {
@@ -362,26 +369,34 @@ class GameScene: SKScene {
     
     func createCar(_ xPos:Int, _ yPos:Int, leftStreet: StreetProtocol) {
         // let number = Int.random(in: -700 ... 300)
-        let streetCarArray = leftStreet.getCars()
-        let number = Int.random(in: 1 ... 2)  // This code generates a random number 1 or 2 to replicate 50% probability for any event
-        var car : Car?
-        if (number == 1) {
-            car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "car") // If 1, a Car instance will be created with the image being that of a car
+        var create = true
+        for vehicle in carArray {
+            if (absoluteValue(xPos, vehicle.getXPos()) < 60 && absoluteValue(yPos, vehicle.getYPos()) < 60) {
+                create = false
+            }
         }
-        else {
-            car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "yellow car") // If 2, a Car instance will be created with the image being that of a pickup truck
-        }
-        
-        self.addChild(car!.getNode())
-        carArray.append(car!)
-        for vehicle in streetCarArray {
-            if let car2 = car!.getClosestCar() {
-                if (leftStreet.getDirection() == 0 && car2.getXPos() < vehicle.getXPos() && car!.getXPos() > vehicle.getXPos()) {
-                    vehicle.setClosestCar(car: vehicle)
-                }
-                if (leftStreet.getDirection() == 1 && car2.getXPos() > vehicle.getXPos() && car!.getXPos() < vehicle.getXPos()) {
-                    
-                    vehicle.setClosestCar(car: vehicle)
+        if (create) {
+            let streetCarArray = leftStreet.getCars()
+            let number = Int.random(in: 1 ... 2)  // This code generates a random number 1 or 2 to replicate 50% probability for any event
+            var car : Car?
+            if (number == 1) {
+                car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "car") // If 1, a Car instance will be created with the image being that of a car
+            }
+            else {
+                car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "Green Pickup") // If 2, a Car instance will be created with the image being that of a pickup truck
+            }
+            
+            self.addChild(car!.getNode())
+            carArray.append(car!)
+            for vehicle in streetCarArray {
+                if let car2 = car!.getClosestCar() {
+                    if (leftStreet.getDirection() == 0 && car2.getXPos() < vehicle.getXPos() && car!.getXPos() > vehicle.getXPos()) {
+                        vehicle.setClosestCar(car: vehicle)
+                    }
+                    if (leftStreet.getDirection() == 1 && car2.getXPos() > vehicle.getXPos() && car!.getXPos() < vehicle.getXPos()) {
+                        
+                        vehicle.setClosestCar(car: vehicle)
+                    }
                 }
             }
         }
