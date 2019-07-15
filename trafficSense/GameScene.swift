@@ -60,23 +60,23 @@ class GameScene: SKScene {
 //        blurEffectView.isHidden=true;
 //
         
-        let firstTwoWay = TwoWayHorizontal(midline: 100)
-        twoWayHorizontalArray.append(firstTwoWay)
-        createCar(-100, 100, leftStreet: firstTwoWay.getLeftStreet())
-        createCar(-100, 100, leftStreet: firstTwoWay.getRightStreet())
+        let firstTwoWay = createTwoWayHorizontal(midline: 100)
         
-        let secondTwoWay = TwoWayVertical(midline: 100)
-        twoWayVerticalArray.append(secondTwoWay)
-        createCar(100, -100, leftStreet: secondTwoWay.getDownStreet())
+        createCar(-200, 100, leftStreet: firstTwoWay.getLeftStreet())
+        createCar(-100, 200, leftStreet: firstTwoWay.getRightStreet())
+        
+        let secondTwoWay = createTwoWayVertical(midline: 100)
+        
+        createCar(200, -100, leftStreet: secondTwoWay.getDownStreet())
         createCar(100, -200, leftStreet: secondTwoWay.getUpStreet())
         
-        let third = TwoWayVertical(midline: -300)
-        twoWayVerticalArray.append(third)
-        createCar(-300, -100, leftStreet: third.getDownStreet())
-        createCar(-300, -200, leftStreet: third.getUpStreet())
+        let third = createTwoWayVertical(midline: -300)
         
-        let fourth = TwoWayHorizontal(midline: -300)
-        twoWayHorizontalArray.append(fourth)
+        createCar(-400, -100, leftStreet: third.getDownStreet())
+        createCar(-500, -200, leftStreet: third.getUpStreet())
+        
+        let fourth = createTwoWayHorizontal(midline: -200)
+        
         
         intersectionCreator() // creates all the intersections based on the horizontal and vertical streets created above
         
@@ -401,6 +401,37 @@ class GameScene: SKScene {
             }
         }
     }
+    
+    
+    func createTwoWayHorizontal(midline: Int) -> TwoWayHorizontal {
+        
+        let twoWayHorizontal = TwoWayHorizontal(midline: midline)
+        
+        twoWayHorizontalArray.append(twoWayHorizontal)
+        
+        self.addChild(twoWayHorizontal.getNode())
+        
+        
+        
+        return twoWayHorizontal
+        
+        
+    }
+    
+    
+    func createTwoWayVertical(midline: Int) -> TwoWayVertical {
+        
+        let twoWayVertical = TwoWayVertical(midline: midline)
+        
+        twoWayVerticalArray.append(twoWayVertical)
+        
+        self.addChild(twoWayVertical.getNode())
+        
+        
+        
+        return twoWayVertical
+    }
+    
     
     func createLight(trafficLight: TrafficLight) {
         let light = trafficLight
