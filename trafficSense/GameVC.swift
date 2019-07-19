@@ -20,6 +20,10 @@ class GameVC: UIViewController {
     @IBOutlet var viewScreen: UIView!
     @IBOutlet weak var gameOverLabel: UILabel!
     
+    @IBOutlet weak var restartButton: UIButton!
+    
+    private var unpauseButton = UIView()
+    
     override func viewDidLoad() {
         
         
@@ -58,25 +62,99 @@ class GameVC: UIViewController {
     }
     
     func editGameOverScreen(scene: GameScene){
+        
+        let restartButton = UIButton(frame: CGRect(x: 350, y: 200, width: 300, height: 300))
+        
+        
+        
+        
+        let pauseView = UIView(frame: view.frame)
+        
+        pauseView.addSubview(restartButton)
+        
+        restartButton.isHidden = false
+        restartButton.setTitle("Restart", for: .normal)
+        restartButton.setTitleColor(UIColor.white, for: .normal)
+        
+        
+        
+        let image = UIImage(named: "unPauseButton") as UIImage?
+        let unpauseButton = UIButton(type: UIButton.ButtonType.custom) as UIButton
+        unpauseButton.frame = CGRect(x: 675, y: 35, width: 45, height: 45)
+        unpauseButton.setImage(image, for: .normal)
+//        unpauseButton.addTarget(self, action: "btnTouched:", forControlEvents:.TouchUpInside)
+//        viewScreen.addSubview(unpauseButton)
+//        self.view.addSubview(unpauseButton)
+        
+        
+//        unpauseButton = UIButton(frame: CGRect(x: 250, y: 250, width: 75, height: 75))
+        unpauseButton.tintColor = UIColor.white
+        
+//        unpauseButton.position = CGPoint(x: 500, y: 300)
+        pauseView.addSubview(unpauseButton)
+        
+        
+        
+        //        scene.setEndButton(restartButton: UIButton)
+        
+        viewScreen.addSubview(pauseView)
+        pauseView.isHidden = true
+        pauseView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.6)
+        
+        
+        
+        
         let gameOverLabel = UILabel(frame: CGRect(x: scene.size.width/4, y: scene.size.height/4, width: 1000, height: 50))
+        
+        
+        
+//        let restartButton = UIButton(frame: CGRect(x: 300, y: 300, width: 200, height: 40))
+//
+//        restartButton.setTitle("Restart", for: .normal)
+        
+        
+        
+        
         print(scene.size.width/2)
         print(scene.size.height/2)
         let endView = UIView(frame: view.frame)
         endView.addSubview(gameOverLabel)
+        endView.addSubview(restartButton)
+        
+        restartButton.isHidden = false
+        restartButton.setTitle("Restart", for: .normal)
+        restartButton.setTitleColor(UIColor.white, for: .normal)
+        
+        
         gameOverLabel.isHidden = false
         gameOverLabel.text = "Game Over!"
         gameOverLabel.font = UIFont(name: "Times New Roman", size: 70)
         
         gameOverLabel.textColor = UIColor.red
-        scene.setView(endView: endView)
+        
+//        scene.setEndButton(restartButton: UIButton)
+        
         viewScreen.addSubview(endView)
         endView.isHidden = true
         endView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.6)
         
+        scene.setView(endView: endView, pauseView: pauseView, unpauseButton: unpauseButton)
         
         
         
     }
+    
+    
+    
+//    func createRestartButton(){
+//
+//        restartButton = SKSpriteNode(imageNamed: "restartButton")
+//        restartButton.position = CGPoint(x: 0, y: 0)
+//        restartButton.size = CGSize(width: 150, height: 150)
+//
+//
+//
+//    }
     
     
     override var shouldAutorotate: Bool {

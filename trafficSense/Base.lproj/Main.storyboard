@@ -60,6 +60,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O7C-ca-eq4">
+                                <rect key="frame" x="182" y="433" width="50" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Restart">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -74,6 +81,7 @@
                         <outlet property="gameOverLabel" destination="FXw-Ww-SQK" id="xAC-yP-vcq"/>
                         <outlet property="gameView" destination="upZ-VW-H4F" id="jdB-j8-2tx"/>
                         <outlet property="gameViewSK" destination="EwG-63-zVp" id="0Hc-Db-7Tz"/>
+                        <outlet property="restartButton" destination="O7C-ca-eq4" id="ZJL-5H-DbY"/>
                         <outlet property="viewScreen" destination="upZ-VW-H4F" id="5QG-rF-23S"/>
                     </connections>
                 </viewController>
