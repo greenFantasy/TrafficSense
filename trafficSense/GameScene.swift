@@ -9,9 +9,10 @@
 import SpriteKit
 import GameplayKit
 import UIKit
+import RealmSwift
 
 class GameScene: SKScene {
-    
+    var user: User!
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
     private var pauseButton = SKShapeNode()
@@ -42,6 +43,23 @@ class GameScene: SKScene {
     let worldNode = SKNode()
     
     override func sceneDidLoad() {
+//        print(Realm.Configuration.defaultConfiguration.fileURL!)
+//
+        let realm = try! Realm()
+
+        if realm.objects(User.self).count == 0 {
+            try! realm.write {
+                let newUser = User()
+                
+                newUser.highScore = 0
+                newUser.level = 1
+                
+                realm.add(newUser)
+                user = newUser
+            }
+        } else {
+          user = realm.objects(User.self)[0]
+        }
         self.lastUpdateTime = 0
         
         /*  This next block of code sets a few properties for the score label which will also include time left in the game. Currently its position is set relative to the screen size so that multiple devices can be supported.
@@ -91,7 +109,9 @@ class GameScene: SKScene {
         
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
         
+        timer?.tolerance = 0.15 // Makes the timer more efficient
         
+        RunLoop.current.add(timer!, forMode: RunLoop.Mode.common) // Helps UI stay responsive even with timer
         
         /*  The timer above is now initialized using a few key properties: the timeInterval is the interval in which the timer will update, target is where the timer will be applied, selector specifies a function to run when the timer updates based on the time interval, userInfo can supply information to the selector function, and repeats allows the timer to run continuously until invalidated.
         */
@@ -154,8 +174,6 @@ class GameScene: SKScene {
                 
                 numberOfPauseClicks+=1
                 
-                print("ifjisdjf")
-                print(numberOfPauseClicks)
                 pauseGame()
                 //scene?.view?.isPaused = false
 //                if (numberOfPauseClicks%2 == 0){
@@ -607,7 +625,7 @@ class GameScene: SKScene {
                 
                 if (i%2==1) {
                     if (hitCars[i].getLastTurn() == 2 && hitCars[i-1].getLastTurn() == 2) {
-                        print("two left turning hit cars, no issue")
+//                        print("two left turning hit cars, no issue")
                     } else {
                         hitCounter += 1
                         hitCars[i].changeIntersected()
@@ -624,24 +642,35 @@ class GameScene: SKScene {
     }
     
     func gameOverScreen() {
-        
-    
-        
-        
         timer?.invalidate()
         timer = nil
  
         gameOverLabel.position = CGPoint(x: frame.midX, y: frame.midY)
         gameOverLabel.zPosition = 150
         
-        let labels = getLabelsInView(view: endView)
-        print("foo")
-        for label in labels {
-            label.text = "Game over!  Score: " + String(carsThrough)
-            label.frame.origin = CGPoint(x: frame.midX, y: frame.midY)
-            
-        }
         endView.isHidden = false
+        
+        var isHighScore = false
+        
+        if user.highScore < score {
+            isHighScore = true
+            let realm = try! Realm()
+            
+            try! realm.write {
+                user.highScore = score
+            }
+        }
+        
+        let labels = getLabelsInView(view: endView)
+        for label in labels {
+            score = carsThrough
+            if isHighScore {
+                label.text = "Game over!  Score: " + String(score) + "! Highscore"
+            } else {
+                label.text = "Game over!  Score: " + String(score)
+            }
+            label.frame.origin = CGPoint(x: frame.midX, y: frame.midY)
+        }
     }
     
     func getLabelsInView(view: UIView) -> [UILabel] {

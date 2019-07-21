@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,6 +18,8 @@
 		04D5ED5522CDE1A900824069 /* TwoWayHorizontal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D5ED5422CDE1A900824069 /* TwoWayHorizontal.swift */; };
 		04D5ED5722CE02F800824069 /* TwoWayVertical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D5ED5622CE02F800824069 /* TwoWayVertical.swift */; };
 		04E4750422BB2F1C002FF86D /* GameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E4750322BB2F1C002FF86D /* GameVC.swift */; };
+		63566477C6F510CFB09CCF85 /* Pods_trafficSense.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEAEEB25F2DD6FFAB65ABC1A /* Pods_trafficSense.framework */; };
+		CA2037BE22E431B40096F20B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2037BD22E431B40096F20B /* User.swift */; };
 		D988DA7C22B2ED7C005E54A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D988DA7B22B2ED7C005E54A2 /* AppDelegate.swift */; };
 		D988DA7E22B2ED7C005E54A2 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D988DA7D22B2ED7C005E54A2 /* GameScene.sks */; };
 		D988DA8022B2ED7C005E54A2 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = D988DA7F22B2ED7C005E54A2 /* Actions.sks */; };
@@ -59,6 +61,10 @@
 		04D5ED5422CDE1A900824069 /* TwoWayHorizontal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoWayHorizontal.swift; sourceTree = "<group>"; };
 		04D5ED5622CE02F800824069 /* TwoWayVertical.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoWayVertical.swift; sourceTree = "<group>"; };
 		04E4750322BB2F1C002FF86D /* GameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameVC.swift; sourceTree = "<group>"; };
+		5996CBB262AAD6CAAF2322EE /* Pods-trafficSense.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-trafficSense.debug.xcconfig"; path = "Target Support Files/Pods-trafficSense/Pods-trafficSense.debug.xcconfig"; sourceTree = "<group>"; };
+		6E64D8A7EE00768A9036CC12 /* Pods-trafficSense.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-trafficSense.release.xcconfig"; path = "Target Support Files/Pods-trafficSense/Pods-trafficSense.release.xcconfig"; sourceTree = "<group>"; };
+		AEAEEB25F2DD6FFAB65ABC1A /* Pods_trafficSense.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_trafficSense.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA2037BD22E431B40096F20B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D988DA7822B2ED7C005E54A2 /* trafficSense.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = trafficSense.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D988DA7B22B2ED7C005E54A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D988DA7D22B2ED7C005E54A2 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -82,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63566477C6F510CFB09CCF85 /* Pods_trafficSense.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,6 +109,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9E319C7088889FA154E66899 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5996CBB262AAD6CAAF2322EE /* Pods-trafficSense.debug.xcconfig */,
+				6E64D8A7EE00768A9036CC12 /* Pods-trafficSense.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		B21EC7C9A47190EC0E1BDBA0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AEAEEB25F2DD6FFAB65ABC1A /* Pods_trafficSense.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D988DA6F22B2ED7C005E54A2 = {
 			isa = PBXGroup;
 			children = (
@@ -109,6 +133,8 @@
 				D988DA9522B2ED7E005E54A2 /* trafficSenseTests */,
 				D988DAA022B2ED7E005E54A2 /* trafficSenseUITests */,
 				D988DA7922B2ED7C005E54A2 /* Products */,
+				9E319C7088889FA154E66899 /* Pods */,
+				B21EC7C9A47190EC0E1BDBA0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -145,6 +171,7 @@
 				D988DA8822B2ED7E005E54A2 /* Assets.xcassets */,
 				D988DA8A22B2ED7E005E54A2 /* LaunchScreen.storyboard */,
 				D988DA8D22B2ED7E005E54A2 /* Info.plist */,
+				CA2037BD22E431B40096F20B /* User.swift */,
 			);
 			path = trafficSense;
 			sourceTree = "<group>";
@@ -174,9 +201,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D988DAA622B2ED7E005E54A2 /* Build configuration list for PBXNativeTarget "trafficSense" */;
 			buildPhases = (
+				E38FB13A480A977BE42A0D1B /* [CP] Check Pods Manifest.lock */,
 				D988DA7422B2ED7C005E54A2 /* Sources */,
 				D988DA7522B2ED7C005E54A2 /* Frameworks */,
 				D988DA7622B2ED7C005E54A2 /* Resources */,
+				86D74199AC974BA75F5EC365 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -295,6 +324,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		86D74199AC974BA75F5EC365 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-trafficSense/Pods-trafficSense-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-trafficSense/Pods-trafficSense-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-trafficSense/Pods-trafficSense-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E38FB13A480A977BE42A0D1B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-trafficSense-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		D988DA7422B2ED7C005E54A2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -308,6 +379,7 @@
 				04B01AAF22BC3765006B3585 /* TrafficLight.swift in Sources */,
 				04B01AAD22BBEA72006B3585 /* Car.swift in Sources */,
 				04A6A3B622C7052A00D511F6 /* Intersection.swift in Sources */,
+				CA2037BE22E431B40096F20B /* User.swift in Sources */,
 				04E4750422BB2F1C002FF86D /* GameVC.swift in Sources */,
 				04D5ED4D22CDD2A600824069 /* LeftStreet.swift in Sources */,
 				04D5ED5122CDD2CF00824069 /* UpStreet.swift in Sources */,
@@ -486,6 +558,7 @@
 		};
 		D988DAA722B2ED7E005E54A2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5996CBB262AAD6CAAF2322EE /* Pods-trafficSense.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -505,6 +578,7 @@
 		};
 		D988DAA822B2ED7E005E54A2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6E64D8A7EE00768A9036CC12 /* Pods-trafficSense.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

@@ -1,0 +1,6 @@
+framework module Pods_trafficSense {
+  umbrella header "Pods-trafficSense-umbrella.h"
+
+  export *
+  module * { export * }
+}
