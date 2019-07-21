@@ -45,6 +45,7 @@ class GameVC: UIViewController {
                 sceneNode.scaleMode = .aspectFill
                 
                 if let view = self.gameViewSK {
+                    
                     editGameOverScreen(scene: sceneNode)
                     view.presentScene(sceneNode)
                     
@@ -53,6 +54,7 @@ class GameVC: UIViewController {
                     view.showsFPS = true
                     
                     view.showsNodeCount = true
+                    
                 }
                 
             }
@@ -66,15 +68,15 @@ class GameVC: UIViewController {
         let restartButton = UIButton(frame: CGRect(x: 350, y: 200, width: 300, height: 300))
         
         
-        
-        
         let pauseView = UIView(frame: view.frame)
         
         pauseView.addSubview(restartButton)
         
+        let restartImage = UIImage(named: "restart") as UIImage?
         restartButton.isHidden = false
-        restartButton.setTitle("Restart", for: .normal)
+//        restartButton.setTitle("Restart", for: .normal)
         restartButton.setTitleColor(UIColor.white, for: .normal)
+        restartButton.setImage(restartImage, for: .normal)
         
         
         
@@ -112,19 +114,18 @@ class GameVC: UIViewController {
 //
 //        restartButton.setTitle("Restart", for: .normal)
         
-        
-        
-        
         print(scene.size.width/2)
         print(scene.size.height/2)
         let endView = UIView(frame: view.frame)
         endView.addSubview(gameOverLabel)
-        endView.addSubview(restartButton)
+        
         
         restartButton.isHidden = false
         restartButton.setTitle("Restart", for: .normal)
-        restartButton.setTitleColor(UIColor.white, for: .normal)
+        restartButton.tintColor = UIColor.white
+        restartButton.frame = CGRect(x: 720, y: 35, width: 45, height: 45)
         
+        pauseView.addSubview(restartButton)
         
         gameOverLabel.isHidden = false
         gameOverLabel.text = "Game Over!"
@@ -133,12 +134,12 @@ class GameVC: UIViewController {
         gameOverLabel.textColor = UIColor.red
         
 //        scene.setEndButton(restartButton: UIButton)
-        
+        endView.addSubview(restartButton)
         viewScreen.addSubview(endView)
         endView.isHidden = true
         endView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.6)
         
-        scene.setView(endView: endView, pauseView: pauseView, unpauseButton: unpauseButton)
+        scene.setView(endView: endView, pauseView: pauseView, unpauseButton: unpauseButton, restartButton: restartButton)
         
         
         
@@ -146,15 +147,7 @@ class GameVC: UIViewController {
     
     
     
-//    func createRestartButton(){
-//
-//        restartButton = SKSpriteNode(imageNamed: "restartButton")
-//        restartButton.position = CGPoint(x: 0, y: 0)
-//        restartButton.size = CGSize(width: 150, height: 150)
-//
-//
-//
-//    }
+
     
     
     override var shouldAutorotate: Bool {

@@ -17,6 +17,7 @@ class GameScene: SKScene {
     private var pauseButton = SKShapeNode()
     private var unpauseButton = SKShapeNode()
     private var unpauseButtonInPauseView = UIButton()
+    private var restartButton = UIButton()
     private var endView:UIView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
     private var pauseView:UIView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
     private var lastUpdateTime : TimeInterval = 0
@@ -144,14 +145,7 @@ class GameScene: SKScene {
                     
                 }
                 
-//                if x == "pause" {
-//                    print("chicken")
-//                    createunPauseButton()
-//                    pauseButton.removeFromParent()
-//                    pauseGame()
-//                } else {
-//                    print(x)
-//                }
+
             }
             
             
@@ -164,6 +158,8 @@ class GameScene: SKScene {
                 pauseGame()
 
             }
+            
+            
             
 //            if unpauseButton.contains(pointOfTouch) {
 //
@@ -241,7 +237,6 @@ class GameScene: SKScene {
     
     func pauseGame() {//pauses the game and brings up a pause screen
         
-        
         pauseView.isHidden = false
         
         self.view?.isPaused = true
@@ -281,19 +276,35 @@ class GameScene: SKScene {
     }
     
     
-    func setView(endView: UIView, pauseView: UIView, unpauseButton: UIButton){
+    func setView(endView: UIView, pauseView: UIView, unpauseButton: UIButton, restartButton: UIButton){
         self.endView = endView
         self.pauseView = pauseView
         self.unpauseButtonInPauseView = unpauseButton
+        self.restartButton = restartButton
+        restartButton.addTarget(self, action: #selector(restartGame(_:)), for: .touchUpInside)
         unpauseButtonInPauseView.addTarget(self, action: #selector(unPauseGame(_ :)), for: UIControl.Event.touchUpInside)
     }
     
-    func restartGame(resetButton: UIButton){
+    
+    @objc func restartGame(_ sender: UIButton) {
         
+        self.removeAllChildren()
+        self.removeAllActions()
+        self.scene?.removeFromParent()
+        self.endView.removeFromSuperview()
+        self.carArray.removeAll()
+        createNewScene()
+    }
+
+    func createNewScene(){
         
+        timeLeft = 60
+        score = 0
+        sceneDidLoad()
         
         
     }
+
     
     
     func moveCarForward(vehicle: Car) {
@@ -304,59 +315,63 @@ class GameScene: SKScene {
     
     func move() {
         var elementsToRemove:[Int] = []
-        for i in 0...carArray.count-1 {
-            let vehicle = carArray[i]
-            var moveVehicle = true
-            let tempLight = vehicle.findLight()
-            if (isVehicleCloseToLight(vehicle: vehicle, light: tempLight) && tempLight.isRed()) {
-                moveVehicle = false
-            }
+        
+        if (carArray.count > 0){
             
-            if (moveVehicle) {
+            for i in 0...carArray.count-1 {
+                let vehicle = carArray[i]
+                var moveVehicle = true
+                let tempLight = vehicle.findLight()
+                if (isVehicleCloseToLight(vehicle: vehicle, light: tempLight) && tempLight.isRed()) {
+                    moveVehicle = false
+                }
                 
-                if let intersection = isCarAtAnyIntersectionChecker(vehicle) {
+                if (moveVehicle) {
                     
-                    _ = vehicle.addToIntersectionArray(intersection: intersection)
-                    if (vehicle.getLastTurn() == 0 || vehicle.isLastTurnCompleted()) {
+                    if let intersection = isCarAtAnyIntersectionChecker(vehicle) {
+                        
+                        _ = vehicle.addToIntersectionArray(intersection: intersection)
+                        if (vehicle.getLastTurn() == 0 || vehicle.isLastTurnCompleted()) {
+                            moveCarForward(vehicle: vehicle)
+                        } else if vehicle.getLastTurn() == 1 {
+                            vehicle.makeRightTurn(intersection: intersection)
+                        } else if vehicle.getLastTurn() == 2 {
+                            vehicle.makeLeftTurn(intersection: intersection)
+                        }
+                    } else {
                         moveCarForward(vehicle: vehicle)
-                    } else if vehicle.getLastTurn() == 1 {
-                        vehicle.makeRightTurn(intersection: intersection)
-                    } else if vehicle.getLastTurn() == 2 {
-                        vehicle.makeLeftTurn(intersection: intersection)
                     }
-                } else {
-                    moveCarForward(vehicle: vehicle)
                 }
-            }
-            if (vehicle.getXPos() <= Int(-self.scene!.size.width/2) && vehicle.getDirection() == 0) {
-                createCar(Int(self.scene!.size.width/2) + 100, vehicle.getYPos(), leftStreet: vehicle.getStreet())
-                elementsToRemove.append(i)
-                removeCar(vehicle)
-                if (carArray.count < 25) {
-                    createCar(Int(self.scene!.size.width/2) + 200, vehicle.getYPos(), leftStreet: vehicle.getStreet())
-                    createCar(Int(self.scene!.size.width/2) + 300, vehicle.getYPos(), leftStreet: vehicle.getStreet())
+                if (vehicle.getXPos() <= Int(-self.scene!.size.width/2) && vehicle.getDirection() == 0) {
+                    createCar(Int(self.scene!.size.width/2) + 100, vehicle.getYPos(), leftStreet: vehicle.getStreet())
+                    elementsToRemove.append(i)
+                    removeCar(vehicle)
+                    if (carArray.count < 25) {
+                        createCar(Int(self.scene!.size.width/2) + 200, vehicle.getYPos(), leftStreet: vehicle.getStreet())
+                        createCar(Int(self.scene!.size.width/2) + 300, vehicle.getYPos(), leftStreet: vehicle.getStreet())
+                    }
                 }
-            }
-            else if (vehicle.getYPos() <= Int(-self.scene!.size.height/2) && vehicle.getDirection() == 2) {
-                createCar(vehicle.getXPos(), Int(self.scene!.size.height/2), leftStreet: vehicle.getStreet())
-                elementsToRemove.append(i)
-                removeCar(vehicle)
-                if (carArray.count < 25) {
-                    //createCar(-vehicle.getXPos(), 1000, leftStreet: vehicle.getStreet())
+                else if (vehicle.getYPos() <= Int(-self.scene!.size.height/2) && vehicle.getDirection() == 2) {
+                    createCar(vehicle.getXPos(), Int(self.scene!.size.height/2), leftStreet: vehicle.getStreet())
+                    elementsToRemove.append(i)
+                    removeCar(vehicle)
+                    if (carArray.count < 25) {
+                        //createCar(-vehicle.getXPos(), 1000, leftStreet: vehicle.getStreet())
+                    }
                 }
-            }
-            else if (vehicle.getYPos() >= Int(self.scene!.size.height/2) && vehicle.getDirection() == 3) {
-                createCar(vehicle.getXPos(), Int(-self.scene!.size.height/2), leftStreet: vehicle.getStreet())
-                elementsToRemove.append(i)
-                removeCar(vehicle)
-                if (carArray.count < 25) {
-                    //createCar(vehicle.getXPos(), -vehicle.getYPos() - 100, leftStreet: vehicle.getStreet())
+                else if (vehicle.getYPos() >= Int(self.scene!.size.height/2) && vehicle.getDirection() == 3) {
+                    createCar(vehicle.getXPos(), Int(-self.scene!.size.height/2), leftStreet: vehicle.getStreet())
+                    elementsToRemove.append(i)
+                    removeCar(vehicle)
+                    if (carArray.count < 25) {
+                        //createCar(vehicle.getXPos(), -vehicle.getYPos() - 100, leftStreet: vehicle.getStreet())
+                    }
                 }
-            }
-            else if (vehicle.getXPos() >= Int(self.scene!.size.width/2) && vehicle.getDirection() == 1) {
-                createCar(Int(-self.scene!.size.width/2), vehicle.getYPos(), leftStreet: vehicle.getStreet())
-                elementsToRemove.append(i)
-                removeCar(vehicle)
+                else if (vehicle.getXPos() >= Int(self.scene!.size.width/2) && vehicle.getDirection() == 1) {
+                    createCar(Int(-self.scene!.size.width/2), vehicle.getYPos(), leftStreet: vehicle.getStreet())
+                    elementsToRemove.append(i)
+                    removeCar(vehicle)
+                }
             }
         }
         removeElementsFromArray(elementsToRemove: elementsToRemove, array: &carArray)
@@ -560,23 +575,23 @@ class GameScene: SKScene {
     func checkCollisions() {
         
         var hitCars: [Car] = []
-        
-        for i in 0...carArray.count-2 {
-            if (carArray[i].getXPos() > -Int(scene!.size.width)/2 && carArray[i].getXPos() <  Int(scene!.frame.width)/2 && carArray[i].getYPos() > -Int(scene!.size.height)/2 && carArray[i].getYPos() < Int(scene!.size.height)/2)
-            {
-                for j in i+1...carArray.count-1 {
-                    if (carArray[i].getNode().frame.intersects(carArray[j].getNode().frame) && (!carArray[i].getIntersected() || !carArray[j].getIntersected()) )
-                    {
-                        hitCars.append(carArray[j])
-                        hitCars.append(carArray[i])
+        if (carArray.count > 0) {
+            for i in 0...carArray.count-2 {
+                if (carArray[i].getXPos() > -Int(scene!.size.width)/2 && carArray[i].getXPos() <  Int(scene!.frame.width)/2 && carArray[i].getYPos() > -Int(scene!.size.height)/2 && carArray[i].getYPos() < Int(scene!.size.height)/2)
+                {
+                    for j in i+1...carArray.count-1 {
+                        if (carArray[i].getNode().frame.intersects(carArray[j].getNode().frame) && (!carArray[i].getIntersected() || !carArray[j].getIntersected()) )
+                        {
+                            hitCars.append(carArray[j])
+                            hitCars.append(carArray[i])
+                        }
+                        
+                        
                     }
-                    
-                    
                 }
+                
             }
-            
         }
-        
         if (hitCars.count>0){
             
             for i in 0...hitCars.count-1 {
