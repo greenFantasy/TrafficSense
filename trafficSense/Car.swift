@@ -237,8 +237,8 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     }
     
     func makeLeftTurn(intersection: Intersection) {
-        let frontTurnMargin = 20
-        let backTurnMargin = 200
+        let frontTurnMargin = 45
+        let backTurnMargin = 225
         if !isLastTurnCompleted() {
             let oppStreet = intersection.getOppositeStreet(street: currentStreet)
             let direction = currentStreet.getDirection()

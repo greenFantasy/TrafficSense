@@ -29,6 +29,8 @@ class GameScene: SKScene {
     private var score = 0  // Score variable
     private var timer:Timer?  // Creates optional of type Timer
     private var timeLeft = 60  //Variable used in timer for setting amount of time left
+    private var pausedTimeLeft: Int = 0
+    private var wasPaused = false
     private var streetArray:[StreetProtocol] = []
     private var twoWayHorizontalArray:[TwoWayHorizontal] = []
     private var twoWayVerticalArray:[TwoWayVertical] = []
@@ -101,13 +103,16 @@ class GameScene: SKScene {
     */
     @objc func onTimerFires() {
         timeLeft -= 1
+        
         scoreLabel.text = "\(timeLeft) sec left  Score: " + String(carsThrough) + "  Cars Hit: " + String(hitCounter)
+        
         
         if timeLeft <= 0 {
             timer?.invalidate()
             timer = nil
             gameOverScreen()
         }
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -157,33 +162,7 @@ class GameScene: SKScene {
                 print("ifjisdjf")
                 print(numberOfPauseClicks)
                 pauseGame()
-                //scene?.view?.isPaused = false
-//                if (numberOfPauseClicks%2 == 0){
-//                    unpauseButton.removeFromParent()
-//                    isTheGamePaused = false
-//
-//                    pauseGame()
-//                }
-//                else{
-//                    pauseButton.removeFromParent()
-//                    isTheGamePaused = true
-//
-//
-//                }
-//
-//                if unpauseButtonInEndView.contains(pointOfTouch as! UIFocusEnvironment){
-//
-//
-//                    print("hellp")
-//
-//                }
-//                switchImage()
-                
-                
-//                createunPauseButton()
-//
-//                pauseButton.removeFromParent()
-                //unPauseGame()
+
             }
             
 //            if unpauseButton.contains(pointOfTouch) {
@@ -225,20 +204,7 @@ class GameScene: SKScene {
         
     }
     
-//    func createunPauseButton(){
-//
-//
-//            unpauseButton = SKShapeNode(rectOf: CGSize(width: 75, height: 75))
-//            unpauseButton.fillColor = UIColor.white
-//            unpauseButton.fillTexture = SKTexture.init(image: UIImage(named: "unPauseButton")!)
-//            unpauseButton.position = CGPoint(x: 500, y: 300)
-//
-//            self.addChild(unpauseButton)
-//            //pauseGame()
-//            //scene?.view?.isPaused = true
-//
-//
-//    }
+
     
     func switchImage() {
         
@@ -276,14 +242,18 @@ class GameScene: SKScene {
     func pauseGame() {//pauses the game and brings up a pause screen
         
         
-        
-        
-        
-        
-        
-        
         pauseView.isHidden = false
+        
         self.view?.isPaused = true
+        
+        timer?.invalidate()
+        
+//        pausedTimeLeft = timeLeft
+        
+        
+//        timer?.invalidate()
+        
+        
         //        scene.setEndButton(restartButton: UIButton)
 //        self.addChild(pauseView)
 //        self.addSubview(pauseView)
@@ -293,11 +263,17 @@ class GameScene: SKScene {
         
     }
     
+    
+    
+    
+    
     @objc func unPauseGame(_ button: UIButton) {
         
         pauseView.isHidden = true
         self.view?.isPaused = false
-        
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
+//        scoreLabel.text = "\(pausedTimeLeft) sec left  Score: " + String(carsThrough) + "  Cars Hit: " + String(hitCounter)
+//        wasPaused = true
     }
     
     func switchLight(trafficLight:TrafficLight) {
