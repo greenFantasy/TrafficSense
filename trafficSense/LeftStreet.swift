@@ -80,8 +80,10 @@ class LeftStreet:StreetProtocol {
     
     func updateClosestCar() {
         for vehicle in carArray {
-            vehicle.clearClosestCar()
-            findClosestCar(car: vehicle)
+            if vehicle.getStreet().getDirection() == self.getDirection() {
+                vehicle.clearClosestCar()
+                findClosestCar(car: vehicle)
+            }
         }
     }
     
@@ -94,7 +96,7 @@ class LeftStreet:StreetProtocol {
             if (vehicle.getXPos() < x) {
                 if let unwrapped = closest {
                     if (vehicle.getXPos() > unwrapped.getXPos()) {
-                        closest! = vehicle
+                        closest = vehicle
                         car.setClosestCar(car: closest!)
                     }
                 } else {

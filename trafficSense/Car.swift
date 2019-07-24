@@ -26,11 +26,11 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     private var completedTurnsArray:[Bool] = []
     private var carType: String = "car"
     private var currentIntersection: Intersection?
-    
+    private var function: (SKSpriteNode, UIColor) -> Void
     
     //private let finalDestination
     
-    init (x: Int, y: Int, street: StreetProtocol, imageNamed: String) {
+    init (x: Int, y: Int, street: StreetProtocol, imageNamed: String, funct: @escaping (SKSpriteNode, UIColor) -> Void) {
         carType = imageNamed
         xPos = x
         yPos = y
@@ -40,6 +40,8 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
         
         closestCar = nil
         previousStreet = currentStreet
+        function = funct
+
         super.init()
         
         currentStreet.addCar(car: self)
@@ -87,6 +89,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
             if !(currentStreet.getDirection() == previousStreet.getDirection()) {
                 if !isAtIntersection2(intersection: intersection) {
                     previousStreet.removeCar(car: self)
+                    function(shapeNode, UIColor.yellow)
                     previousStreet = currentStreet
                     currentIntersection = nil
                 }
@@ -114,6 +117,7 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     
     func setClosestCar(car: Car) {
         closestCar = car
+        function(closestCar!.getNode(), UIColor.green)
     }
     
     func clearClosestCar() {
@@ -237,8 +241,8 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     }
     
     func makeLeftTurn(intersection: Intersection) {
-        let frontTurnMargin = 20
-        let backTurnMargin = 200
+        let frontTurnMargin = 45
+        let backTurnMargin = 225
         if !isLastTurnCompleted() {
             let oppStreet = intersection.getOppositeStreet(street: currentStreet)
             let direction = currentStreet.getDirection()
@@ -279,26 +283,34 @@ class Car: SKShapeNode {  // Car implements SKShapeNode class
     }
     
     func updateTurnArray() {
-        if (currentStreet.getDirection() == 0) {
-            for _ in 0...20 {
-                var number = Int.random(in: -1 ... 10)
-                if number <= 0 {
-                    number = 0
-                } else if number > 2 {
-                    number = 2
-                }
-                turnArray.append(number)
-                completedTurnsArray.append(number == 0)
+//        if (currentStreet.getDirection() == 0) {
+//            for _ in 0...20 {
+//                var number = Int.random(in: -1 ... 10)
+//                if number <= 0 {
+//                    number = 0
+//                } else if number > 2 {
+//                    number = 2
+//                }
+//                turnArray.append(number)
+//                completedTurnsArray.append(number == 0)
+//            }
+//        } else {
+//            for _ in 0...20 {
+//                var number = Int.random(in: -3 ... 2)
+//                if number <= 0 {
+//                    number = 0
+//                }
+//                turnArray.append(number)
+//                completedTurnsArray.append(number == 0)
+//            }
+//        }
+        for _ in 0...20 {
+            var number = Int.random(in: -1 ... 2)
+            if number <= 0 {
+                number = 0
             }
-        } else {
-            for _ in 0...20 {
-                var number = Int.random(in: -3 ... 2)
-                if number <= 0 {
-                    number = 0
-                }
-                turnArray.append(number)
-                completedTurnsArray.append(number == 0)
-            }
+            turnArray.append(number)
+            completedTurnsArray.append(number == 0)
         }
     }
     

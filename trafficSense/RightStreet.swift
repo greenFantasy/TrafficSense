@@ -77,8 +77,10 @@ class RightStreet:StreetProtocol {
     
     func updateClosestCar() {
         for vehicle in carArray {
-            vehicle.clearClosestCar()
-            findClosestCar(car: vehicle)
+            if vehicle.getStreet().getDirection() == self.getDirection() {
+                vehicle.clearClosestCar()
+                findClosestCar(car: vehicle)
+            }
         }
     }
     

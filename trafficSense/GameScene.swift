@@ -26,14 +26,18 @@ class GameScene: SKScene {
     private var scoreLabel = SKLabelNode(fontNamed: "Helvetica Neue UltraLight")
     private var score = 0  // Score variable
     private var timer:Timer?  // Creates optional of type Timer
-    private var timeLeft = 60  //Variable used in timer for setting amount of time left
+    private var timeLeft = 180  //Variable used in timer for setting amount of time left
     private var streetArray:[StreetProtocol] = []
     private var twoWayHorizontalArray:[TwoWayHorizontal] = []
     private var twoWayVerticalArray:[TwoWayVertical] = []
     private var gameOverLabel = SKLabelNode(fontNamed: "Helvetica Neue UltraLight")
     private var hitCounter = 0
     private var carsThrough = 0
+    private var frameIntervalTesting = 0
     
+    
+    private var vLinesForTesting:[SKSpriteNode] = [] // for testing purposes, ignore
+    private var hLinesForTesting:[SKSpriteNode] = [] // for testing purposes, ignore
     
     
     override func sceneDidLoad() {
@@ -75,7 +79,22 @@ class GameScene: SKScene {
         createCar(-400, -100, leftStreet: third.getDownStreet())
         createCar(-500, -200, leftStreet: third.getUpStreet())
         
-        let fourth = createTwoWayHorizontal(midline: -200)
+        let _ = createTwoWayHorizontal(midline: -200)
+        
+        for _ in 1...40 {
+            let temp = SKSpriteNode(color: UIColor.blue, size: CGSize(width: 5, height: 80))
+            vLinesForTesting.append(temp)
+            self.addChild(temp)
+            temp.zPosition = 200
+            temp.position = CGPoint(x: 0, y: 0)
+            temp.isHidden = true
+            let temp2 = SKSpriteNode(color: UIColor.blue, size: CGSize(width: 80, height: 5))
+            hLinesForTesting.append(temp2)
+            self.addChild(temp2)
+            temp2.zPosition = 200
+            temp2.position = CGPoint(x: 0, y: 0)
+            temp2.isHidden = true
+        } // this is creating lines that we can use for game testing purposes (ignore this)
         
         
         intersectionCreator() // creates all the intersections based on the horizontal and vertical streets created above
@@ -380,10 +399,10 @@ class GameScene: SKScene {
             let number = Int.random(in: 1 ... 2)  // This code generates a random number 1 or 2 to replicate 50% probability for any event
             var car : Car?
             if (number == 1) {
-                car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "car") // If 1, a Car instance will be created with the image being that of a car
+                car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "car", funct: createTestingSprite) // If 1, a Car instance will be created with the image being that of a car
             }
             else {
-                car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "yellow car") // If 2, a Car instance will be created with the image being that of a pickup truck
+                car = Car(x: xPos, y: yPos, street: leftStreet, imageNamed: "yellow car", funct: createTestingSprite) // If 2, a Car instance will be created with the image being that of a pickup truck
             }
             
             self.addChild(car!.getNode())
@@ -445,11 +464,23 @@ class GameScene: SKScene {
             for verticalTwoWay in twoWayVerticalArray {
                 let intersection = Intersection(horizontal: horizontalTwoWay, vertical: verticalTwoWay)
                 intersectionArray.append(intersection)
+                accessTestLine(hOrV: 1, posX: intersection.getXFrame()[0], posY: average(intersection.getYFrame()))
+                accessTestLine(hOrV: 1, posX: intersection.getXFrame()[1], posY: average(intersection.getYFrame()))
+                accessTestLine(hOrV: 0, posX: average(intersection.getXFrame()), posY: intersection.getYFrame()[0])
+                accessTestLine(hOrV: 0, posX: average(intersection.getXFrame()), posY: intersection.getYFrame()[1])
                 for trafficLight in intersection.getAllLights() {
                     createLight(trafficLight: trafficLight)
                 }
             }
         }
+    }
+    
+    func average (_ array: [Int]) -> Int {
+        var tempSum = 0
+        for i in array {
+            tempSum += i
+        }
+        return tempSum/array.count
     }
     
     func isCarAtAnyIntersectionChecker(_ car: Car) -> Intersection? {
@@ -474,39 +505,53 @@ class GameScene: SKScene {
                         hitCars.append(carArray[j])
                         hitCars.append(carArray[i])
                     }
-                    
-                    
                 }
             }
-            
         }
-        
-        if (hitCars.count>0){
-            
+        if (hitCars.count > 0) {
             for i in 0...hitCars.count-1 {
-                
+                createTestingSprite(hitCars[i].getNode())
                 if (i%2==1) {
                     if (hitCars[i].getLastTurn() == 2 && hitCars[i-1].getLastTurn() == 2) {
                         print("two left turning hit cars, no issue")
                     } else {
                         hitCounter += 1
                         hitCars[i].changeIntersected()
+                        if let car = hitCars[i].getClosestCar() {
+                            createTestingSprite(car.getNode(), UIColor.red)
+                        }
                         hitCars[i-1].changeIntersected()
+                        if let car = hitCars[i-1].getClosestCar() {
+                            createTestingSprite(car.getNode(), UIColor.red)
+                        }
                         print("Car Hit #" + String(hitCounter))
                         gameOverScreen()
                     }
                 }
-            
             }
-            
         }
-        
+    }
+    
+    func createTestingSprite(_ base: SKSpriteNode) {
+        let sprite = SKSpriteNode(color: UIColor.blue, size: base.size)
+        sprite.position = base.position
+        self.addChild(sprite)
+        sprite.zPosition = 500
+        sprite.name = "sprite"
+    }
+    
+    func createTestingSprite(_ base: SKSpriteNode, _ color: UIColor) {
+        let sprite = SKSpriteNode(color: color, size: base.size)
+        sprite.position = base.position
+        self.addChild(sprite)
+        sprite.zPosition = 500
+        sprite.name = "sprite"
     }
     
     func gameOverScreen() {
         timer?.invalidate()
         timer = nil
- 
+        scoreLabel.text = "Game over!  Score: " + String(carsThrough)
         gameOverLabel.position = CGPoint(x: frame.midX, y: frame.midY)
         let labels = getLabelsInView(view: endView)
         print("foo")
@@ -514,7 +559,7 @@ class GameScene: SKScene {
             label.text = "Game over!  Score: " + String(carsThrough)
             label.frame.origin = CGPoint(x: frame.midX, y: frame.midY)
         }
-        endView.isHidden = false
+        //endView.isHidden = false
     }
     
     func getLabelsInView(view: UIView) -> [UILabel] {
@@ -546,6 +591,23 @@ class GameScene: SKScene {
         }
     }
     
+    func accessTestLine(hOrV: Int, posX: Int, posY: Int) {
+        let tempArray:[SKSpriteNode]
+        if (hOrV == 0) {
+            tempArray = hLinesForTesting
+        } else {
+            tempArray = vLinesForTesting
+        }
+        for i in 0...tempArray.count - 1 {
+            if !(tempArray[i].name == "used") {
+                tempArray[i].name = "used"
+                tempArray[i].position = CGPoint(x: posX, y: posY)
+                tempArray[i].isHidden = false
+                break
+            }
+        }
+    }
+    
     override func update(_ currentTime: TimeInterval) {
         move()
         checkCollisions()
@@ -555,6 +617,21 @@ class GameScene: SKScene {
         if (self.lastUpdateTime == 0) {
             self.lastUpdateTime = currentTime
         }
+        
+        if (frameIntervalTesting % 100 == 0) {
+            for node in self.children {
+                if let name = node.name {
+                    if (name == "sprite") {
+                        node.removeFromParent()
+                    }
+                }
+            }
+        }
+//        if (frameIntervalTesting % 200) {
+//            createCar(-700, -700, leftStreet: twoWayVerticalArray[0].getUpStreet())
+//        }
+        
+        frameIntervalTesting += 1
         
         // Calculate time since last update
         let dt = currentTime - self.lastUpdateTime

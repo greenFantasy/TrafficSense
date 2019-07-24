@@ -85,7 +85,7 @@ class TrafficLight {
         else if state == 1 {
             state = 0
             updateLight()
-            timeLeft = 3
+            timeLeft = 2
             timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
             
             /*  The timer above is now initialized using a few key properties: the timeInterval is the interval in which the timer will update, target is where the timer will be applied, selector specifies a function to run when the timer updates based on the time interval, userInfo can supply information to the selector function, and repeats allows the timer to run continuously until invalidated.

@@ -20,8 +20,9 @@ class Intersection {
     private var yCenter:Int
     private var horizontalTwoWay:TwoWayHorizontal
     private var verticalTwoWay:TwoWayVertical
-    private var width = 60
-    private var height = 60
+    private var width = 100
+    private var height = 100
+    private var extra = 20
     private var lightLeft:TrafficLight
     private var lightRight:TrafficLight
     private var lightDown:TrafficLight
@@ -114,11 +115,11 @@ class Intersection {
     }
     
     func getXFrame() -> [Int] {
-        return [xCenter - width/2, xCenter + width/2]
+        return [xCenter - width - extra, xCenter + width + extra]
     }
     
     func getYFrame() -> [Int] {
-        return [yCenter - height/2, yCenter + height/2]
+        return [yCenter - height - extra, yCenter + height + extra]
     }
     
 }
